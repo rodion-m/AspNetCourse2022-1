@@ -1,0 +1,11 @@
+﻿{
+  type: "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  title: "One or more validation errors occurred.",
+  status: 400,
+  traceId: "|17a2706d-43736ad54bed2e65.",
+  errors: {
+    name: [
+      "The name field is required."
+    ]
+  }
+}

@@ -1,0 +1,116 @@
+﻿@page "/todo"
+@using System.Security.Claims
+@using Lesson.BlazorServerAuth.Data
+@using Lesson.BlazorServerAuth.Models
+@using System.ComponentModel.DataAnnotations
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ITodoRepository TodoRepository
+
+<h3>Список дел для тебя: @_userName</h3>
+@if (_user?.Identity?.IsAuthenticated == true)
+{
+	<EditForm Model="_newItemModel" OnValidSubmit="AddTodo">
+		<DataAnnotationsValidator></DataAnnotationsValidator>
+		<div class="form-group">
+			<label for="item_text">Новая задача:</label>
+			<InputText class="form-control" id="item_text" 
+			           @bind-Value="_newItemModel.Text"
+			           placeholder="Текст новой задачи">
+			</InputText>
+		</div>
+		<ValidationSummary></ValidationSummary>
+		<button type="submit" class="btn btn-primary">Добавить</button>
+	</EditForm>
+	
+	<table class="table">
+		<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Текст</th>
+			<th scope="col">Дата создания</th>
+			<th scope="col">Готово</th>
+			<th scope="col">Удалить</th>
+		</tr>
+		</thead>
+		<tbody>
+		@{ var i = 1; }
+		@foreach (var item in _items
+			.OrderBy(it => it.IsDone)
+			.ThenByDescending(it => it.CreatedOn))
+		{
+			<tr>
+				<th scope="row">@(i++)</th>
+				<td>@item.Text</td>
+				<td>@item.CreatedOn.ToString("g")</td>
+				<td>
+					<a href="javascript:" @onclick="() => ToggleItemDoneness(item)">
+						@(item.IsDone ? "Да" : "Нет")
+					</a>
+				</td>
+				<td>
+					<a href="javascript:" @onclick="() => RemoveItem(item)">❌</a>
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
+
+@code {
+	private ClaimsPrincipal? _user;
+	private Guid _userId;
+	private string _userName = "";
+	private List<TodoItem> _items = new();
+	private readonly NewItemModel _newItemModel = new();
+
+	private class NewItemModel
+	{
+		[Required]
+		public string Text { get; set; } = "";
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		_user = state.User;
+		if (_user.Identity!.IsAuthenticated)
+		{
+			_userName = _user.Identity.Name!;
+			var strId = _user.FindFirstValue(ClaimTypes.NameIdentifier);
+			_userId = Guid.Parse(strId);
+			_items = new List<TodoItem>(await TodoRepository.GetAllByUserId(_userId));
+		}
+		else
+		{
+			_userName = "Вход не выполнен";
+		}
+	}
+
+	private async Task ToggleItemDoneness(TodoItem item)
+	{
+		item.IsDone = !item.IsDone;
+		await TodoRepository.Update(item);
+	}
+
+	private async Task RemoveItem(TodoItem item)
+	{
+		_items.Remove(item);
+		await TodoRepository.Remove(item);
+	}
+
+	private async Task AddTodo()
+	{
+		var item = new TodoItem
+		{
+			Id = Guid.NewGuid(),
+			UserId = _userId,
+			CreatedOn = DateTimeOffset.Now,
+			Text = _newItemModel.Text
+		};
+		_items.Add(item);
+		await TodoRepository.Add(item);
+	}
+
+}

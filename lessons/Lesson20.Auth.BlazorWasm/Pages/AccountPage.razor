@@ -1,0 +1,18 @@
+﻿@page "/Account"
+@using Lesson14.Models
+@inherits AppComponentBase
+
+<h3>Аккаунт</h3>
+<br/>Имя: @account?.Name
+<br/>Email: @account?.Email
+
+@code {
+	private Account? account;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		account = await _shopClient.GetAccount();
+	}
+
+}

@@ -1,0 +1,22 @@
+﻿@page "/Cart"
+@using Lesson14.Models
+@inherits AppComponentBase
+@inject NavigationManager NavigationManager
+
+<h3>Корзина</h3>
+Товаров в корзине: @cart?.ItemCount
+
+@code {
+	private Cart? cart;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+	// if (!Authorized)
+	// {
+	// 	NavigationManager.NavigateTo("LogIn");
+	// }
+		cart = await _shopClient.GetCart();
+	}
+
+}

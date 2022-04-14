@@ -1,0 +1,54 @@
+@page "/counter_live"
+
+@implements IDisposable
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+	private int currentCount;
+	private readonly CancellationTokenSource _cts = new();
+
+	private void IncrementCount()
+	{
+		currentCount++;
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		_ = StartPeriodicTimer();
+	}
+
+	private async Task StartPeriodicTimer()
+	{
+		using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+		while (await periodicTimer.WaitForNextTickAsync(_cts.Token))
+		{
+			currentCount++;
+			StateHasChanged();
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await base.OnAfterRenderAsync(firstRender);
+	}
+
+	protected override Task OnParametersSetAsync()
+	{
+		return base.OnParametersSetAsync();
+	}
+
+	public void Dispose()
+	{
+		_cts.Cancel();
+		_cts.Dispose();
+	}
+
+}

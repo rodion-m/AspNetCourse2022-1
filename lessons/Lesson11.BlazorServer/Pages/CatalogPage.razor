@@ -1,0 +1,42 @@
+﻿@page "/CatalogPage"
+<h3>CatalogPage</h3>
+
+<h1>Мой каталог</h1>
+
+@page "/registration"
+
+<h2>Регистрация на забег</h2>
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+	<DataAnnotationsValidator/>
+	<table>
+		<tr>
+			<td>Имя:</td>
+			<td>
+				<InputText @bind-Value="model.FirstName"></InputText>
+			</td>
+		</tr> …
+		<tr>
+			<input type="submit" value="Зарегистрироваться">
+		</tr>
+	</table>
+</EditForm>
+
+@code {
+	readonly CatalogModel model = new();
+
+	class CatalogModel
+	{
+		public string FirstName { get; set; }
+	}
+
+	private void HandleValidSubmit()
+	{
+	//логика регистрации
+	}
+
+}
+
+
+@code {
+
+}

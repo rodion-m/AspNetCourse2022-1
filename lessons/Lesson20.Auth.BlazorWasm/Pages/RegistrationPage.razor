@@ -1,0 +1,27 @@
+﻿@page "/Registration"
+@using Lesson14.Models.Requests
+@inherits AppComponentBase
+
+@inject NavigationManager NavigationManager;
+
+<h3>Регистрация</h3>
+<EditForm Model="_request" OnValidSubmit="ValidSubmit">
+	<DataAnnotationsValidator></DataAnnotationsValidator>
+	Имя: <InputText @bind-Value="_request.Name" class="text-black"></InputText> <br/>
+	Email: <InputText @bind-Value="_request.Email" class="text-black"></InputText> <br/>
+	Пароль: <InputText type="password" @bind-Value="_request.Password" class="text-black"></InputText> <br/>
+	<ValidationSummary></ValidationSummary>
+	<input type="submit" value="Дальше">
+</EditForm>
+
+@code {
+	private readonly RegisterRequest _request = new();
+
+	private async Task ValidSubmit()
+	{
+		var response = await _shopClient.Register(_request);
+		await _localStorage.SetItemAsync("token", response.Token);
+		NavigationManager.NavigateTo("Account");
+	}
+
+}
