@@ -1,13 +1,16 @@
 using GreatShop.Domain;
 using GreatShop.Infrastructure;
+using GreatShop.Infrastructure.Data;
 using GreatShop.WebApi.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+const string dbPath = "greatshop.db";
+builder.Services.AddDbContext<AppDbContext>(
+    options => options.UseSqlite($"Data Source={dbPath}"));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
