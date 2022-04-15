@@ -12,7 +12,7 @@ namespace GreatShop.Domain.Services
 
         public CartService(
             ICartRepository cartRepository, 
-            ICartItemRepository cartItemRepository, 
+            ICartItemRepository cartItemRepository,
             ILogger<CartService> logger)
         {
             _cartRepository = cartRepository;
@@ -20,15 +20,19 @@ namespace GreatShop.Domain.Services
             _logger = logger;
         }
 
-        public async Task AddProduct(Guid accountId, Guid productId, int quantity = 1)
+        public async Task AddProduct(Guid accountId, Guid productId, double quantity = 1d)
         {
             var cart = await _cartRepository.GetCartByAccountId(accountId);
             var cartItem = cart.Items.SingleOrDefault(i => i.ProductId == productId);
-
             if (cartItem is not null)
             {
-                _logger.LogDebug("Adding quantity to an existed item");
-                cartItem.Quantity += quantity;
+                var newQty = cartItem.Quantity + quantity;
+                if (newQty > 1000)
+                {
+                    throw new InvalidOperationException("Quantity cannot be greater than 1000");
+                }
+                _logger.LogDebug("Adding quantity to an existed item, new qty is {Quantity}", newQty);
+                cartItem.Quantity = newQty;
                 await _cartItemRepository.Update(cartItem);
             }
             else

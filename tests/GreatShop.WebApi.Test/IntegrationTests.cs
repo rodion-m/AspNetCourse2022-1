@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace GreatShop.WebApi.Test;
+
 
 public class IntegrationTests : IDisposable
 {
@@ -21,7 +23,12 @@ public class IntegrationTests : IDisposable
 
     public IntegrationTests(ITestOutputHelper output)
     {
-        _application = new WebApplicationFactory<Program>()
+        _application = CreateTestServer(output, "test.db");
+    }
+
+    private WebApplicationFactory<Program> CreateTestServer(ITestOutputHelper output, string dbPath)
+    {
+        return new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
                 //Тут можно сделать доп. настройки сервера.
@@ -31,11 +38,18 @@ public class IntegrationTests : IDisposable
                     //Заменяем модуль отправки писем на заглушку
                     services.RemoveAll<IEmailSender>();
                     services.AddSingleton<IEmailSender, StubEmailSender>();
+                    
+                    services.RemoveAll<AppDbContext>();
+                    services.AddDbContext<AppDbContext>(
+                        options => options.UseSqlite($"Data Source={dbPath}"));
 
-                    //Создаем таблицы:
+                    // using var serviceProvider = services.BuildServiceProvider();
+                    // var appContext = serviceProvider.GetService<AppDbContext>();
+
+                    // //Создаем таблицы:
                     using var serviceProvider = services.BuildServiceProvider();
                     using var serviceScope = serviceProvider.CreateScope();
-                    var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+                    using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
                     context!.Database.EnsureCreated();
                 });
                 
@@ -50,7 +64,8 @@ public class IntegrationTests : IDisposable
     [Fact]
     public async Task Ping_endpoint_returns_pong()
     {
-        HttpClient client = _application.CreateClient();
+        var application = CreateTestServer(null, "asdsadas.db");
+        HttpClient client = application.CreateClient();
         // Здесь может быть создание ShopClient
         var response = await client.GetAsync("/ping");
         response.EnsureSuccessStatusCode();
@@ -58,11 +73,23 @@ public class IntegrationTests : IDisposable
         Assert.Equal("pong", content);
     }
     
+    [Fact]
+    public async Task Ping_endpoint_returns_pong33()
+    {
+        HttpClient client = _application.CreateClient();
+        // Здесь может быть создание ShopClient
+        var response = await client.GetAsync("/ping");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.Equal("pong", content);
+    }
+
     public void Dispose()
     {
+        //_application.Server.Services.GetService()
         using (var serviceScope = _application.Server.Services.CreateScope())
         {
-            var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+            using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
             // Удаляем тестовую БД:
             context!.Database.EnsureDeleted();
         }

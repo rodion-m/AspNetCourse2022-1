@@ -4,5 +4,4 @@ namespace GreatShop.Infrastructure.Messaging;
 
 public class SendgridEmailSender : IEmailSender
 {
-    
 }

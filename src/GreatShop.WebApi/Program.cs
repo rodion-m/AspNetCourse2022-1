@@ -3,12 +3,18 @@ using GreatShop.Infrastructure;
 using GreatShop.Infrastructure.Data;
 using GreatShop.WebApi.Mappers;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-const string dbPath = "greatshop.db";
+var dbPath = builder.Configuration["dbPath"];
 builder.Services.AddDbContext<AppDbContext>(
     options => options.UseSqlite($"Data Source={dbPath}"));
+
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration);
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

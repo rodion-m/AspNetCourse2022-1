@@ -4,5 +4,4 @@ namespace GreatShop.Domain.Repositories;
 
 public interface ICartItemRepository : IRepository<CartItem>
 {
-    
 }
