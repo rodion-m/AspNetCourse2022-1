@@ -1,6 +1,6 @@
 ﻿namespace GreatShop.Domain.Entities;
 
-public class Cart : IEntity
+public record Cart : IEntity
 {
     public Cart() {}
     public Cart(Guid id, Guid accountId, List<CartItem> items)
@@ -17,10 +17,12 @@ public class Cart : IEntity
     public int ItemCount => Items.Count;
 }
 
-public class CartItem : IEntity
+public record CartItem : IEntity
 {
     public Guid Id { get; init; }
     
     public Guid ProductId { get; init; }
     public double Quantity { get; set; }
+    
+    public Cart Cart { get; set; } = null!;
 }
