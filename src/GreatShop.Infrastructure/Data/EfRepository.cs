@@ -29,7 +29,6 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class,
 
     public async Task Update(TEntity TEntity)
     {
-        _dbContext.Entry(TEntity).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync();
     }
 }

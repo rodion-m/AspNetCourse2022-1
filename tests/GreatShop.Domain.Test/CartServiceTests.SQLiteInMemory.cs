@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GreatShop.Domain.Entities;
 using GreatShop.Domain.Repositories;
@@ -7,18 +8,17 @@ using GreatShop.Domain.Services;
 using GreatShop.Infrastructure.Data;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace GreatShop.Domain.Test;
 
-public class CartServiceTests
+public class CartServiceTests_SQLiteInMemory
 {
     private readonly ILogger<CartService> _logger;
 
-    public CartServiceTests(ITestOutputHelper output)
+    public CartServiceTests_SQLiteInMemory(ITestOutputHelper output)
     {
         //Divergic.Logging.XUnit
         _logger = output.BuildLoggerFor<CartService>();
@@ -33,12 +33,18 @@ public class CartServiceTests
             new Cart(Guid.NewGuid(), accountId, new List<CartItem>())
         );
         var productId = Guid.NewGuid();
-        await services.CartService.AddProduct(accountId, productId, 1d);
+        var product = CreateFakeProduct(productId);
+        await services.CartService.AddProduct(accountId, product, 1d);
         var cart = await services.CartService.GetAccountCart(accountId);
         Assert.Single(cart.Items);
-        var item = cart.Items[0];
+        var item = cart.Items.First();
         Assert.Equal(productId, item.ProductId);
         Assert.Equal(1d, item.Quantity);
+    }
+
+    private static Product CreateFakeProduct(Guid productId)
+    {
+        return new Product(productId, Guid.Empty, "", decimal.One, "https://site.com/");
     }
 
     [Fact]
@@ -50,11 +56,12 @@ public class CartServiceTests
             new Cart(Guid.NewGuid(), accountId, new List<CartItem>())
         );
         var productId = Guid.NewGuid();
-        await services.CartService.AddProduct(accountId, productId);
-        await services.CartService.AddProduct(accountId, productId);
+        var product = CreateFakeProduct(productId);
+        await services.CartService.AddProduct(accountId, product);
+        await services.CartService.AddProduct(accountId, product);
         var cart = await services.CartService.GetAccountCart(accountId);
         Assert.Single(cart.Items);
-        var item = cart.Items[0];
+        var item = cart.Items.First();
         Assert.Equal(productId, item.ProductId);
         Assert.Equal(2d, item.Quantity);
     }
@@ -71,17 +78,19 @@ public class CartServiceTests
             new Cart(Guid.NewGuid(), accountId, new List<CartItem>())
         );
         var productId = Guid.NewGuid();
+        var product = CreateFakeProduct(productId);
         for (int i = 0; i < n; i++)
         {
-            await services.CartService.AddProduct(accountId, productId);
+            await services.CartService.AddProduct(accountId, product);
         }
+
         var cart = await services.CartService.GetAccountCart(accountId);
         Assert.Single(cart.Items);
-        var item = cart.Items[0];
+        var item = cart.Items.First();
         Assert.Equal(productId, item.ProductId);
-        Assert.Equal((double) n, item.Quantity);
+        Assert.Equal((double)n, item.Quantity);
     }
-    
+
     [Fact]
     public async Task Adding_item_to_cart_with_quantity_greater_than_1000_failed()
     {
@@ -91,10 +100,11 @@ public class CartServiceTests
             new Cart(Guid.NewGuid(), accountId, new List<CartItem>())
         );
         var productId = Guid.NewGuid();
-        await services.CartService.AddProduct(accountId, productId, 500);
+        var product = CreateFakeProduct(productId);
+        await services.CartService.AddProduct(accountId, product, 500);
 
         await Assert.ThrowsAsync<InvalidOperationException>(
-            () => services.CartService.AddProduct(accountId, productId, 501)
+            () => services.CartService.AddProduct(accountId, product, 501)
         );
     }
 
@@ -121,13 +131,13 @@ public class CartServiceTests
         {
             var (context, connection) = await CreateAppDbContext();
             ICartRepository cartRepo = new CartRepository(context);
-            ICartItemRepository cartItemRepo = new CartItemRepository(context);
-            var cartService = new CartService(cartRepo, cartItemRepo, logger);
+            //ICartItemRepository cartItemRepo = new CartItemRepository(context);
+            var cartService = new CartService(cartRepo, logger);
             return new TestServices(cartRepo, cartService, context, connection);
         }
 
         private static async Task<(
-            AppDbContext context, 
+            AppDbContext context,
             SqliteConnection connection)> CreateAppDbContext()
         {
             var connection = new SqliteConnection("DataSource=:memory:");

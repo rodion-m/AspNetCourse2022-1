@@ -10,9 +10,14 @@ public class CartRepository : EfRepository<Cart>, ICartRepository
     {
     }
 
-    public Task<Cart> GetCartByAccountId(Guid accountId)
+    public async Task<Cart> GetCartByAccountId(Guid accountId)
     {
-        return _dbContext.Carts.FirstAsync(it => it.AccountId == accountId);
+        var cart = await _dbContext.Carts
+            .SingleAsync(it => it.AccountId == accountId);
+
+        await _dbContext.Entry(cart).Collection(it => it.Items).LoadAsync();
+        
+        return cart;
     }
 
     public Task<Cart?> FindCartByAccountId(Guid accountId)

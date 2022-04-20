@@ -18,6 +18,17 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        BuildCartItems(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+    
+    private void BuildCartItems(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<CartItem>(action =>
+        {
+            action.HasOne(dto => dto.Cart)
+                .WithMany(dto => dto.Items)
+                .IsRequired();
+        });
     }
 }

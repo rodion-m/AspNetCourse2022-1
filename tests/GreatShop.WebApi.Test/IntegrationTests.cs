@@ -43,13 +43,9 @@ public class IntegrationTests : IDisposable
                     services.AddDbContext<AppDbContext>(
                         options => options.UseSqlite($"Data Source={dbPath}"));
 
-                    // using var serviceProvider = services.BuildServiceProvider();
-                    // var appContext = serviceProvider.GetService<AppDbContext>();
-
-                    // //Создаем таблицы:
+                    // Создаем таблицы:
                     using var serviceProvider = services.BuildServiceProvider();
-                    using var serviceScope = serviceProvider.CreateScope();
-                    using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+                    using var context = serviceProvider.GetService<AppDbContext>();
                     context!.Database.EnsureCreated();
                 });
                 
@@ -64,18 +60,6 @@ public class IntegrationTests : IDisposable
     [Fact]
     public async Task Ping_endpoint_returns_pong()
     {
-        var application = CreateTestServer(null, "asdsadas.db");
-        HttpClient client = application.CreateClient();
-        // Здесь может быть создание ShopClient
-        var response = await client.GetAsync("/ping");
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        Assert.Equal("pong", content);
-    }
-    
-    [Fact]
-    public async Task Ping_endpoint_returns_pong33()
-    {
         HttpClient client = _application.CreateClient();
         // Здесь может быть создание ShopClient
         var response = await client.GetAsync("/ping");
@@ -89,7 +73,7 @@ public class IntegrationTests : IDisposable
         //_application.Server.Services.GetService()
         using (var serviceScope = _application.Server.Services.CreateScope())
         {
-            using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+            var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
             // Удаляем тестовую БД:
             context!.Database.EnsureDeleted();
         }
