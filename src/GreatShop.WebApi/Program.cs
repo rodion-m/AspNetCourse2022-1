@@ -5,39 +5,58 @@ using GreatShop.WebApi.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-var dbPath = builder.Configuration["dbPath"];
-builder.Services.AddDbContext<AppDbContext>(
-    options => options.UseSqlite($"Data Source={dbPath}"));
+Log.Information("Starting up");
 
-builder.Host.UseSerilog((context, configuration) =>
+try
 {
-    configuration.ReadFrom.Configuration(context.Configuration);
-});
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    var dbPath = builder.Configuration["dbPath"];
+    builder.Services.AddDbContext<AppDbContext>(
+        options => options.UseSqlite($"Data Source={dbPath}"));
 
-builder.Services.AddSingleton<IClock, UtcClock>();
-builder.Services.AddSingleton<HttpModelsMapper>();
+    builder.Host.UseSerilog((context, configuration) =>
+    {
+        configuration.ReadFrom.Configuration(context.Configuration);
+    });
 
-var app = builder.Build();
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    builder.Services.AddSingleton<IClock, UtcClock>();
+    builder.Services.AddSingleton<HttpModelsMapper>();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.MapGet("/ping", () => "pong");
+
+    app.Run();
 }
-
-//app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.MapGet("/ping", () => "pong");
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Unhandled exception on server startup");
+    throw;
+}
+finally
+{
+    Log.Information("Shut down complete");
+    Log.CloseAndFlush(); // Перед выходом дожидаемся пока все логи будут записаны (сохранены)
+}
