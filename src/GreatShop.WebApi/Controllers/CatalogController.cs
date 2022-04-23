@@ -21,10 +21,10 @@ public class CatalogController : ControllerBase
     }
 
     [HttpGet("v1/get_product")]
-    public async Task<ProductModelV1> GetProductV1([Required] Guid productId)
+    public async Task<IActionResult> GetProductV1([Required] Guid productId)
     {
         var product = await _catalogService.GetProduct(productId);
-        return _mapper.MapProductModelV1(product);
+        return Ok(_mapper.MapProductModelV1(product));
     }
 
     [HttpGet("v1/get_products")]

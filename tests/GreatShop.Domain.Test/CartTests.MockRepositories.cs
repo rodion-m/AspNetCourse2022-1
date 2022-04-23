@@ -43,7 +43,8 @@ public class CartTests_MockRepositories
                 }
             }
         );
-        cartRepositoryMock.Setup(x => x.GetCartByAccountId(accountId))
+        cartRepositoryMock.Setup(
+                x => x.GetCartByAccountId(accountId))
             .ReturnsAsync(cart);
         cartRepositoryMock.Setup(x => x.Update(It.IsAny<Cart>()));
         cartItemsRepositoryMock.Setup(x => x.Update(It.IsAny<CartItem>()));

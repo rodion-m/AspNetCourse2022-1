@@ -1,4 +1,5 @@
-﻿using GreatShop.Domain.Entities;
+﻿using System.Linq.Expressions;
+using GreatShop.Domain.Entities;
 using GreatShop.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,11 +19,12 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class,
     public Task<TEntity> GetById(Guid Id)
         => _entities.FirstAsync(it => it.Id == Id);
 
-    public Task<TEntity?> FindById(Guid Id)
+    public Task<TEntity?> FindById(Guid Id) 
         => _entities.FirstOrDefaultAsync(it => it.Id == Id);
 
     public async Task Add(TEntity entity)
     {
+        
         await _entities.AddAsync(entity);
         await _dbContext.SaveChangesAsync();
     }
