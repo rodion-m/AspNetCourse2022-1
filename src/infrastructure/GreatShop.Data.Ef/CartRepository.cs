@@ -2,7 +2,7 @@
 using GreatShop.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace GreatShop.Infrastructure.Data;
+namespace GreatShop.Data.Ef;
 
 public class CartRepository : EfRepository<Cart>, ICartRepository
 {

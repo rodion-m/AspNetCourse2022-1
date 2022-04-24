@@ -26,6 +26,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\GreatShop.Domain\GreatShop.Domain.csproj" />
       <ProjectReference Include="..\..\src\GreatShop.Infrastructure\GreatShop.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\infrastructure\GreatShop.Data.Ef\GreatShop.Data.Ef.csproj" />
     </ItemGroup>
 
 </Project>

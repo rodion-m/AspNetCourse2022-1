@@ -1,6 +1,6 @@
+using GreatShop.Data.Ef;
 using GreatShop.Domain;
 using GreatShop.Infrastructure;
-using GreatShop.Infrastructure.Data;
 using GreatShop.WebApi.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Serilog;

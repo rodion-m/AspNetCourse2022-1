@@ -1,9 +1,8 @@
-﻿using System.Linq.Expressions;
-using GreatShop.Domain.Entities;
+﻿using GreatShop.Domain.Entities;
 using GreatShop.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace GreatShop.Infrastructure.Data;
+namespace GreatShop.Data.Ef;
 
 public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
 {

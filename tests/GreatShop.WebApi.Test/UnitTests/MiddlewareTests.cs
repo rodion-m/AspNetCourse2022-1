@@ -1,10 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using GreatShop.Infrastructure.Data;
 using GreatShop.WebApi.Middlewares;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace GreatShop.WebApi.Test.UnitTests;
