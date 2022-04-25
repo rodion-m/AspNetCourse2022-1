@@ -30,21 +30,26 @@ public partial class UnitOfWorkFactoryTests
     [Fact]
     public async Task Add_account_and_cart_works()
     {
-        await using var uow = await _unitOfWorkFactory.CreateAsync();
         var account = CreateAccount();
         var cart = CreateCart(account);
-        await uow.AccountRepository.Add(account);
-        await uow.CartRepository.Add(cart);
-        await uow.SaveChangesAsync();
+        await using (var uow = await _unitOfWorkFactory.CreateAsync())
+        {
+            await uow.AccountRepository.Add(account);
+            await uow.CartRepository.Add(cart);
+            await uow.SaveChangesAsync();
+        }
         
-        var accountFromDb = await uow.AccountRepository.GetById(account.Id);
-        var cartFromDb = await uow.CartRepository.GetById(cart.Id);
-        Assert.Equal(account.Id, accountFromDb.Id);
-        Assert.Equal(cart.Id, cartFromDb.Id);
+        await using (var uow = await _unitOfWorkFactory.CreateAsync())
+        {
+            var accountFromDb = await uow.AccountRepository.GetById(account.Id);
+            var cartFromDb = await uow.CartRepository.GetById(cart.Id);
+            Assert.Equal(account.Id, accountFromDb.Id);
+            Assert.Equal(cart.Id, cartFromDb.Id);
+        }
     }
     
     [Fact]
-    public async Task Retrieve_entity_from_local_session_works()
+    public async Task Retrieve_document_from_local_session_works()
     {
         await using var uow = await _unitOfWorkFactory.CreateAsync();
         var account = CreateAccount();
