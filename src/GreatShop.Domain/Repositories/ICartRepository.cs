@@ -1,10 +1,9 @@
 using GreatShop.Domain.Entities;
 
-namespace GreatShop.Domain.Repositories
+namespace GreatShop.Domain.Repositories;
+
+public interface ICartRepository : IRepository<Cart>
 {
-    public interface ICartRepository : IRepository<Cart>
-    {
-        Task<Cart> GetCartByAccountId(Guid accountId);
-        Task<Cart?> FindCartByAccountId(Guid accountId);
-    }
+    Task<Cart> GetCartByAccountId(Guid accountId);
+    Task<Cart?> FindCartByAccountId(Guid accountId);
 }

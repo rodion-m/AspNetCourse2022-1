@@ -15,11 +15,11 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class,
 
     private DbSet<TEntity> _entities => _dbContext.Set<TEntity>();
 
-    public Task<TEntity> GetById(Guid Id)
-        => _entities.FirstAsync(it => it.Id == Id);
+    public Task<TEntity> GetById(Guid id)
+        => _entities.FirstAsync(it => it.Id == id);
 
-    public Task<TEntity?> FindById(Guid Id) 
-        => _entities.FirstOrDefaultAsync(it => it.Id == Id);
+    public Task<TEntity?> FindById(Guid id) 
+        => _entities.FirstOrDefaultAsync(it => it.Id == id);
 
     public async Task Add(TEntity entity)
     {

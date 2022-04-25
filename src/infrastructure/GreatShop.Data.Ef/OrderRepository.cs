@@ -13,14 +13,14 @@ internal class OrderRepository : IOrderRepository
         _dbContext = dbContext;
     }
 
-    public Task<Order> GetById(Guid Id)
+    public Task<Order> GetById(Guid id)
     {
-        return _dbContext.Orders.FirstAsync(it => it.Id == Id);
+        return _dbContext.Orders.FirstAsync(it => it.Id == id);
     }
 
-    public Task<Order?> FindById(Guid Id)
+    public Task<Order?> FindById(Guid id)
     {
-        return _dbContext.Orders.FirstOrDefaultAsync(it => it.Id == Id);
+        return _dbContext.Orders.FirstOrDefaultAsync(it => it.Id == id);
     }
 
     public async Task<IReadOnlyCollection<Order>> GetAll()
