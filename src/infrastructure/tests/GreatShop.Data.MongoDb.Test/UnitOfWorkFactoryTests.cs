@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GreatShop.Domain.Entities;
 using Xunit;
@@ -36,7 +37,8 @@ public partial class UnitOfWorkFactoryTests
         {
             await uow.AccountRepository.Add(account);
             await uow.CartRepository.Add(cart);
-            await uow.CommitAsync();
+            await Task.Run(async () => await uow.CommitAsync());
+            //await uow.CommitAsync();
         }
         
         await using (var uow = await _unitOfWorkFactory.CreateAsync())
@@ -59,7 +61,7 @@ public partial class UnitOfWorkFactoryTests
     }
     
     [Fact]
-    public async Task Abort_transaction_works()
+    public async Task Rollback_transaction_works()
     {
         var account = CreateAccount();
         await using (var uow = await _unitOfWorkFactory.CreateAsync())
@@ -67,6 +69,46 @@ public partial class UnitOfWorkFactoryTests
             await uow.AccountRepository.Add(account);
         }
         
+        await using (var uow = await _unitOfWorkFactory.CreateAsync(false))
+        {
+            var accountFromDb = await uow.AccountRepository.FindById(account.Id);
+            Assert.Null(accountFromDb);
+        }
+    }
+    
+    [Fact]
+    public async Task Cancel_document_adding_works()
+    {
+        var account = CreateAccount() with { Name = new string(' ', 1_000_000)};
+        {
+            var cts = new CancellationTokenSource();
+            await using var uow = await _unitOfWorkFactory.CreateAsync(cancellationToken: cts.Token);
+            var task = uow.AccountRepository.Add(account, cts.Token);
+            cts.Cancel();
+            await Assert.ThrowsAsync<OperationCanceledException>(() => task);
+        }
+
+        await using (var uow = await _unitOfWorkFactory.CreateAsync(false))
+        {
+            var accountFromDb = await uow.AccountRepository.FindById(account.Id);
+            Assert.Null(accountFromDb);
+        }
+    }
+    
+    [Fact]
+    public async Task Cancel_transaction_commiting_works()
+    {
+        var account = CreateAccount();
+        {
+            await using var uow = await _unitOfWorkFactory.CreateAsync();
+            await uow.AccountRepository.Add(account);
+
+            var cts = new CancellationTokenSource();
+            var task = Task.Run(async () => await uow.CommitAsync(cts.Token));
+            cts.Cancel();
+            await Assert.ThrowsAsync<OperationCanceledException>(() => task);
+        }
+
         await using (var uow = await _unitOfWorkFactory.CreateAsync(false))
         {
             var accountFromDb = await uow.AccountRepository.FindById(account.Id);

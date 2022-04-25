@@ -1,5 +1,3 @@
-using GreatShop.Data.MongoDb;
-
 namespace GreatShop.Domain.Repositories;
 
 public interface IUnitOfWorkFactory

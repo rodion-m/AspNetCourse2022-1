@@ -19,6 +19,8 @@ internal class UnitOfWorkMongoDb : IUnitOfWork
         get { return _accountRepository ??= new AccountRepository(_collections.Accounts, _session); }
     }
 
+    public bool IsCommited { get; private set; }
+
     private readonly CollectionsSet _collections;
     private readonly IClientSessionHandle _session;
 
@@ -38,6 +40,7 @@ internal class UnitOfWorkMongoDb : IUnitOfWork
     public async ValueTask CommitAsync(CancellationToken cancellationToken = default)
     {
         await _session.CommitTransactionAsync(cancellationToken);
+        IsCommited = true;
     }
     
     public void Dispose()
