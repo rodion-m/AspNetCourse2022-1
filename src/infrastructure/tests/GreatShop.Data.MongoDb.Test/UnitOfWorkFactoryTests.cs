@@ -36,7 +36,7 @@ public partial class UnitOfWorkFactoryTests
         {
             await uow.AccountRepository.Add(account);
             await uow.CartRepository.Add(cart);
-            await uow.SaveChangesAsync();
+            await uow.CommitAsync();
         }
         
         await using (var uow = await _unitOfWorkFactory.CreateAsync())

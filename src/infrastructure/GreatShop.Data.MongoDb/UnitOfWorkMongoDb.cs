@@ -35,7 +35,7 @@ internal class UnitOfWorkMongoDb : IUnitOfWork
         _session.StartTransaction(transactionOptions);
     }
 
-    public async ValueTask SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async ValueTask CommitAsync(CancellationToken cancellationToken = default)
     {
         await _session.CommitTransactionAsync(cancellationToken);
     }
