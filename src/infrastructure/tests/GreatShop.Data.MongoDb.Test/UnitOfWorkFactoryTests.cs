@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GreatShop.Domain.Entities;
+using MongoDB.Driver;
 using Xunit;
 
 namespace GreatShop.Data.MongoDb.Test;
 
-public partial class UnitOfWorkFactoryTests
+public partial class UnitOfWorkFactoryTests : IDisposable
 {
+    private const string DbName = "db_test";
     private readonly UnitOfWorkFactory _unitOfWorkFactory;
+    private readonly MongoClient _client;
     partial void LoadEnvironmentVariables();
     
     public UnitOfWorkFactoryTests()
@@ -17,7 +20,8 @@ public partial class UnitOfWorkFactoryTests
         LoadEnvironmentVariables();
         var connectionString = Environment.GetEnvironmentVariable("mongodb_connection_string")!;
         ArgumentNullException.ThrowIfNull(connectionString);
-        _unitOfWorkFactory = new UnitOfWorkFactory(connectionString, "db_test");
+        _client = new MongoClient(connectionString);
+        _unitOfWorkFactory = new UnitOfWorkFactory(_client, DbName);
     }
     
     [Fact]
@@ -124,5 +128,11 @@ public partial class UnitOfWorkFactoryTests
     private static Account CreateAccount()
     {
         return new Account(Guid.NewGuid(), "Name", "asd@asd.com", "", new[] { "Admin" });
+    }
+
+    public void Dispose()
+    {
+        // Очищаем тестовую базу после завершения всех тестов
+        _client.DropDatabase(DbName);
     }
 }

@@ -6,19 +6,22 @@ namespace GreatShop.Data.MongoDb;
 
 public class UnitOfWorkFactory : IUnitOfWorkFactory
 {
-    private readonly MongoClient _client;
+    private readonly IMongoClient _client;
     private readonly CollectionsSet _collections;
 
-    public UnitOfWorkFactory(string connectionString, string dbName)
+    public UnitOfWorkFactory(IMongoClient client, string dbName)
     {
-        if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
         if (dbName == null) throw new ArgumentNullException(nameof(dbName));
-        _client = new MongoClient(connectionString);
+        _client = client ?? throw new ArgumentNullException(nameof(client));
         var db = _client.GetDatabase(dbName);
         _collections = new CollectionsSet(
             db.GetCollection<Account>("accounts")!,
             db.GetCollection<Cart>("carts")!
         );
+    }
+    public UnitOfWorkFactory(string connectionString, string dbName)
+        : this(new MongoClient(connectionString), dbName)
+    {
     }
 
     public async Task<IUnitOfWork> CreateAsync(
