@@ -2,26 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GreatShop.Data.MongoDb;
 using GreatShop.Domain.Entities;
+using GreatShop.Domain.Repositories;
 using MongoDB.Driver;
 using Xunit;
 
-namespace GreatShop.Data.MongoDb.Test;
+namespace GreatShop.Data.Test;
 
-public partial class UnitOfWorkFactoryTests : IDisposable
+public abstract partial class UnitOfWorkFactoryTests : IDisposable
 {
     private const string DbName = "db_test";
-    private readonly UnitOfWorkFactory _unitOfWorkFactory;
-    private readonly MongoClient _client;
+    protected IUnitOfWorkFactory _unitOfWorkFactory = null!;
     partial void LoadEnvironmentVariables();
-    
-    public UnitOfWorkFactoryTests()
+
+    protected UnitOfWorkFactoryTests()
     {
         LoadEnvironmentVariables();
-        var connectionString = Environment.GetEnvironmentVariable("mongodb_connection_string")!;
-        ArgumentNullException.ThrowIfNull(connectionString);
-        _client = new MongoClient(connectionString);
-        _unitOfWorkFactory = new UnitOfWorkFactory(_client, DbName);
     }
     
     [Fact]
@@ -86,7 +83,7 @@ public partial class UnitOfWorkFactoryTests : IDisposable
         {
             var cts = new CancellationTokenSource();
             await using var uow = await _unitOfWorkFactory.CreateAsync(cancellationToken: cts.Token);
-            var task = uow.AccountRepository.Add(account, cts.Token);
+            var task = Task.Run(() => uow.AccountRepository.Add(account, cts.Token), cts.Token);
             cts.Cancel();
             await Assert.ThrowsAsync<OperationCanceledException>(() => task);
         }
@@ -129,9 +126,5 @@ public partial class UnitOfWorkFactoryTests : IDisposable
         return new Account(Guid.NewGuid(), "Name", "asd@asd.com", "", new[] { "Admin" });
     }
 
-    public void Dispose()
-    {
-        // Очищаем тестовую базу после завершения всех тестов
-        _client.DropDatabase(DbName);
-    }
+    public abstract void Dispose();
 }

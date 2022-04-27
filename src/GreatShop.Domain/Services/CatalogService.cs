@@ -5,18 +5,19 @@ namespace GreatShop.Domain.Services;
 
 public class CatalogService
 {
-    private readonly IProductRepository _productRepository;
+    private readonly IUnitOfWorkFactory _uowFactory;
     private readonly IClock _clock;
 
-    public CatalogService(IProductRepository productRepository, IClock clock)
+    public CatalogService(IUnitOfWorkFactory uowFactory, IClock clock)
     {
-        _productRepository = productRepository;
+        _uowFactory = uowFactory;
         _clock = clock;
     }
 
     public async Task<IReadOnlyCollection<Product>> GetProducts(Guid categoryId)
     {
-        var products = await _productRepository.GetProducts(categoryId);
+        await using var uow = await _uowFactory.CreateAsync();
+        var products = await uow.ProductRepository.GetProducts(categoryId);
         if (_clock.GetCurrentTime().DayOfWeek == DayOfWeek.Sunday)
         {
             return products.Select(it => it with {Price = it.Price * 1.1m}).ToArray();
@@ -25,6 +26,15 @@ public class CatalogService
         return products;
     }
 
-    public Task<Product> GetProduct(Guid productId) 
-        => _productRepository.GetById(productId);
+    public async Task<Product> GetProduct(Guid productId)
+    {
+        await using var uow = await _uowFactory.CreateAsync();
+        return await uow.ProductRepository.GetById(productId);
+    }
+
+    public async Task<IReadOnlyCollection<Product>> GetAllProducts()
+    {
+        await using var uow = await _uowFactory.CreateAsync();
+        return await uow.ProductRepository.GetAllProducts();
+    }
 }

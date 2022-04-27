@@ -7,16 +7,21 @@ namespace GreatShop.Data.MongoDb;
 // NOTE: SESSIONS ARE NOT THREAD SAFE
 internal class UnitOfWorkMongoDb : IUnitOfWork
 {
+    private IAccountRepository? _accountRepository;
+    public IAccountRepository AccountRepository
+    {
+        get { return _accountRepository ??= new AccountRepository(_collections.Accounts, _session); }
+    }
+    
     private ICartRepository? _cartRepository;
     public ICartRepository CartRepository
     {
         get { return _cartRepository ??= new CartRepository(_collections.Carts, _session); }
     }
-    
-    private IAccountRepository? _accountRepository;
-    public IAccountRepository AccountRepository
+    private IProductRepository? _productRepository;
+    public IProductRepository ProductRepository
     {
-        get { return _accountRepository ??= new AccountRepository(_collections.Accounts, _session); }
+        get { return _productRepository ??= new ProductRepository(_collections.Products, _session); }
     }
 
     public bool IsCommited { get; private set; }

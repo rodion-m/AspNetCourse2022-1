@@ -8,6 +8,8 @@ public static class Role
 
 public record Account : IEntity
 {
+    protected Account() {}
+    
     public Account(Guid id, string name, string email, string passwordHash, string[] roles)
     {
         Id = id;
@@ -18,10 +20,10 @@ public record Account : IEntity
     }
 
     public Guid Id { get; init; }
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string PasswordHash { get; set; }
-    
+    public string Name { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string PasswordHash { get; set; } = null!;
+
     public DateTimeOffset AllTokensBlockedAt { get; set; }
-    public string[] Roles { get; set; }
+    public string[] Roles { get; set; } = null!;
 }

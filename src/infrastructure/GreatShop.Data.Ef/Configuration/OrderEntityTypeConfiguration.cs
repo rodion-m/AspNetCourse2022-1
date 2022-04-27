@@ -6,19 +6,20 @@ namespace GreatShop.Data.Ef.Configuration;
 
 class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Cart>
 {
-    public void Configure(EntityTypeBuilder<Cart> cartConfiguration)
+    public void Configure(EntityTypeBuilder<Cart> conf)
     {
-        cartConfiguration.ToTable("carts");
-        cartConfiguration.HasKey(o => o.Id);
+        conf.ToTable("carts");
+        conf.HasKey(o => o.Id);
 
         //orderConfiguration.Ignore(b => b.DomainEvents);
 
-        cartConfiguration.Property<string>("Description").IsRequired(false);
+        conf.Property<string>("Description").IsRequired(false);
 
-        var navigation = cartConfiguration.Metadata.FindNavigation(nameof(Cart.Items));
-
+        var navigation = conf.Metadata.FindNavigation(nameof(Cart.Items));
         // DDD Patterns comment:
         //Set as field (New since EF 1.1) to access the OrderItem collection property through its field
         navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+        
+        //conf.Navigation(it => it.Items).AutoInclude();
     }
 }

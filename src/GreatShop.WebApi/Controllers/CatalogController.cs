@@ -33,4 +33,11 @@ public class CatalogController : ControllerBase
         var products = await _catalogService.GetProducts(categoryId);
         return new GetProductsResponseV1(products.Select(_mapper.MapProductModelV1));
     }
+    
+    [HttpGet("v1/get_all_products")]
+    public async Task<GetProductsResponseV1> GetAllProductsV1()
+    {
+        var products = await _catalogService.GetAllProducts();
+        return new GetProductsResponseV1(products.Select(_mapper.MapProductModelV1));
+    }
 }

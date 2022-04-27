@@ -4,22 +4,23 @@ using MongoDB.Driver;
 
 namespace GreatShop.Data.MongoDb;
 
-public class UnitOfWorkFactory : IUnitOfWorkFactory
+public class UnitOfWorkFactoryMongoDb : IUnitOfWorkFactory
 {
     private readonly IMongoClient _client;
     private readonly CollectionsSet _collections;
 
-    public UnitOfWorkFactory(IMongoClient client, string dbName)
+    public UnitOfWorkFactoryMongoDb(IMongoClient client, string dbName)
     {
         if (dbName == null) throw new ArgumentNullException(nameof(dbName));
         _client = client ?? throw new ArgumentNullException(nameof(client));
         var db = _client.GetDatabase(dbName);
         _collections = new CollectionsSet(
             db.GetCollection<Account>("accounts")!,
-            db.GetCollection<Cart>("carts")!
+            db.GetCollection<Cart>("carts")!,
+            db.GetCollection<Product>("products")!
         );
     }
-    public UnitOfWorkFactory(string connectionString, string dbName)
+    public UnitOfWorkFactoryMongoDb(string connectionString, string dbName)
         : this(new MongoClient(connectionString), dbName)
     {
     }
