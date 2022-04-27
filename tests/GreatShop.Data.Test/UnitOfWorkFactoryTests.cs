@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using GreatShop.Data.MongoDb;
 using GreatShop.Domain.Entities;
 using GreatShop.Domain.Repositories;
-using MongoDB.Driver;
 using Xunit;
 
 namespace GreatShop.Data.Test;
@@ -83,9 +81,9 @@ public abstract partial class UnitOfWorkFactoryTests : IDisposable
         {
             var cts = new CancellationTokenSource();
             await using var uow = await _unitOfWorkFactory.CreateAsync(cancellationToken: cts.Token);
-            var task = Task.Run(() => uow.AccountRepository.Add(account, cts.Token), cts.Token);
+            var task = uow.AccountRepository.Add(account, cts.Token);
             cts.Cancel();
-            await Assert.ThrowsAsync<OperationCanceledException>(() => task);
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => task);
         }
 
         await using (var uow = await _unitOfWorkFactory.CreateAsync(false))
@@ -106,7 +104,7 @@ public abstract partial class UnitOfWorkFactoryTests : IDisposable
             var cts = new CancellationTokenSource();
             var task = Task.Run(async () => await uow.CommitAsync(cts.Token));
             cts.Cancel();
-            await Assert.ThrowsAsync<OperationCanceledException>(() => task);
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => task);
         }
 
         await using (var uow = await _unitOfWorkFactory.CreateAsync(false))

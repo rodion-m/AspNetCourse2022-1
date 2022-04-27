@@ -19,7 +19,7 @@ public class AppDbContext : DbContext
     {
     }
 
-    public AppDbContext(string? connectionString, bool enableQueriesLogging)
+    internal AppDbContext(string? connectionString, bool enableQueriesLogging)
     {
         _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         _enableQueriesLogging = enableQueriesLogging;
