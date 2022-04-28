@@ -3,8 +3,7 @@ using GreatShop.Domain.Repositories;
 
 namespace GreatShop.Data.Ef;
 
-//TODO
-public class UnitOfWorkEf : IUnitOfWork
+internal class UnitOfWorkEf : IUnitOfWork
 {
     private readonly AppDbContext _dbContext;
 

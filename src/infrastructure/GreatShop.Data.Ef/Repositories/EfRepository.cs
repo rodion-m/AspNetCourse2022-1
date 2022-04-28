@@ -29,14 +29,14 @@ internal class EfRepository<TEntity>
                    .FirstOrDefaultAsync(it => it.Id == id, cancellationToken: cancellationToken)
                ?? _entities.Local.FirstOrDefault(it => it.Id == id);    }
 
-    public async Task Add(TEntity entity, CancellationToken cancellationToken = default)
+    public async ValueTask Add(TEntity entity, CancellationToken cancellationToken = default)
     {
         await _entities.AddAsync(entity, cancellationToken);
     }
 
-    public Task Update(TEntity TEntity, CancellationToken cancellationToken = default)
+    public ValueTask Update(TEntity TEntity, CancellationToken cancellationToken = default)
     {
         _dbContext.Entry(TEntity).State = EntityState.Modified;
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }

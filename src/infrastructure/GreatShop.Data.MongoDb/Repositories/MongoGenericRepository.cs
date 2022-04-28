@@ -27,14 +27,14 @@ internal class MongoGenericRepository<TEntity> : IRepository<TEntity> where TEnt
             .SingleOrDefaultAsync(cancellationToken: cancellationToken)!;
     }
 
-    public Task Add(TEntity entity, CancellationToken cancellationToken = default)
+    public async ValueTask Add(TEntity entity, CancellationToken cancellationToken = default)
     {
-        return _collection.InsertOneAsync(_session, entity, cancellationToken: cancellationToken);
+        await _collection.InsertOneAsync(_session, entity, cancellationToken: cancellationToken);
     }
 
-    public Task Update(TEntity entity, CancellationToken cancellationToken = default)
+    public async ValueTask Update(TEntity entity, CancellationToken cancellationToken = default)
     {
-        return _collection.ReplaceOneAsync(
+        await _collection.ReplaceOneAsync(
             _session, it => it.Id == entity.Id, entity, cancellationToken: cancellationToken);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using GreatShop.Data.Ef;
@@ -9,23 +10,28 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using MongoDB.Driver;
+using Npgsql;
 using Xunit;
 
 namespace GreatShop.Data.Test;
 
 public class UnitOfWorkFactoryEfTests : UnitOfWorkFactoryTests
 {
-    private readonly SqliteConnection _connection;
+    private readonly IDbConnection _connection;
+    private readonly FakeDbContextFactory _dbContextFactory;
 
     public UnitOfWorkFactoryEfTests()
     {
-        _connection = new SqliteConnection("DataSource=:memory:");
+        var connectionString = Environment.GetEnvironmentVariable("postgres_connection_string")!;
+        ArgumentNullException.ThrowIfNull(connectionString);
+        _connection = new NpgsqlConnection(connectionString);
         _connection.Open();
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseSqlite(_connection)
+            .UseNpgsql((NpgsqlConnection) _connection)
             .Options;
 
-        _unitOfWorkFactory = new UnitOfWorkFactoryEf(new FakeDbContextFactory(options));
+        _dbContextFactory = new FakeDbContextFactory(options);
+        _unitOfWorkFactory = new UnitOfWorkFactoryEf(_dbContextFactory);
     }
     
     public override void Dispose()
@@ -33,9 +39,10 @@ public class UnitOfWorkFactoryEfTests : UnitOfWorkFactoryTests
         _connection.Dispose();
     }
     
-    private class FakeDbContextFactory : IDbContextFactory<AppDbContext>
+    private class FakeDbContextFactory : IDbContextFactory<AppDbContext>, IDisposable
     {
         private readonly DbContextOptions<AppDbContext> _options;
+        private readonly List<DbContext> _contexts = new();
 
         public FakeDbContextFactory(DbContextOptions<AppDbContext> options)
         {
@@ -45,8 +52,18 @@ public class UnitOfWorkFactoryEfTests : UnitOfWorkFactoryTests
         public AppDbContext CreateDbContext()
         {
             var context = new AppDbContext(_options);
+            _contexts.Add(context);
             context.Database.EnsureCreated();
             return context;
+        }
+
+        public void Dispose()
+        {
+            foreach (var dbContext in _contexts)
+            {
+                dbContext.Database.EnsureDeleted();
+                dbContext.Dispose();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GreatShop.Data.Ef;
 using GreatShop.Domain.Entities;
 using GreatShop.Domain.Repositories;
 using Xunit;
@@ -10,7 +11,6 @@ namespace GreatShop.Data.Test;
 
 public abstract partial class UnitOfWorkFactoryTests : IDisposable
 {
-    private const string DbName = "db_test";
     protected IUnitOfWorkFactory _unitOfWorkFactory = null!;
     partial void LoadEnvironmentVariables();
 
@@ -77,11 +77,17 @@ public abstract partial class UnitOfWorkFactoryTests : IDisposable
     [Fact]
     public async Task Cancel_document_adding_works()
     {
+        if (this is UnitOfWorkFactoryEfTests)
+        {
+            Assert.True(true, "Document adding cancellation in EF skipped since it's not supported.");
+            return;
+        }
         var account = CreateAccount() with { Name = new string(' ', 1_000_000)};
         {
             var cts = new CancellationTokenSource();
             await using var uow = await _unitOfWorkFactory.CreateAsync(cancellationToken: cts.Token);
-            var task = uow.AccountRepository.Add(account, cts.Token);
+            await uow.AccountRepository.Add(account with{Id = Guid.NewGuid()}, cts.Token);
+            var task = Task.Run(() => uow.AccountRepository.Add(account, cts.Token));
             cts.Cancel();
             await Assert.ThrowsAnyAsync<OperationCanceledException>(() => task);
         }

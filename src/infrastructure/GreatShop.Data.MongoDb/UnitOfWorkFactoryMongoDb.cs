@@ -26,14 +26,15 @@ public class UnitOfWorkFactoryMongoDb : IUnitOfWorkFactory
     }
 
     public async Task<IUnitOfWork> CreateAsync(
-        bool startTransactionImmediately = true, 
+        bool startTransactionImmediately = true,
+        TransactionIsolationLevel isolationLevel = TransactionIsolationLevel.Default, //TODO
         CancellationToken cancellationToken = default)
     {
-        var session = await _client.StartSessionAsync(new ClientSessionOptions(), cancellationToken);
+        var session = await _client.StartSessionAsync(null, cancellationToken);
         var unitOfWorkMongoDb = new UnitOfWorkMongoDb(_collections, session);
         if (startTransactionImmediately)
         {
-            unitOfWorkMongoDb.StartTransaction();
+            unitOfWorkMongoDb.StartTransaction(); //new TransactionOptions()
         }
         return unitOfWorkMongoDb;
     }

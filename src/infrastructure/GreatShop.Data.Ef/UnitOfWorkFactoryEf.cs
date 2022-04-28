@@ -13,10 +13,16 @@ public class UnitOfWorkFactoryEf : IUnitOfWorkFactory
     }
     
     public async Task<IUnitOfWork> CreateAsync(
-        bool startTransactionImmediately = true, 
+        bool startTransactionImmediately = true,
+        TransactionIsolationLevel isolationLevel = TransactionIsolationLevel.Default,
         CancellationToken cancellationToken = default)
     {
         var dbContext = await _contextFactory.CreateDbContextAsync(cancellationToken);
+        if (startTransactionImmediately)
+        {
+            //await dbContext.Database.BeginTransactionAsync(cancellationToken);
+        }
+
         return new UnitOfWorkEf(dbContext);
     }
 }
