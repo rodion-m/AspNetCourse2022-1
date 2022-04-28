@@ -7,17 +7,20 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\GreatShop.Configurations\GreatShop.Configurations.csproj" />
         <ProjectReference Include="..\..\GreatShop.Domain\GreatShop.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <InternalsVisibleTo Include="GreatShop.Domain.Test" />
+        <InternalsVisibleTo Include="GreatShop.Data.Test" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     </ItemGroup>
     
 </Project>

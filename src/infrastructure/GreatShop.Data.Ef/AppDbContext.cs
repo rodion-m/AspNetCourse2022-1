@@ -1,47 +1,49 @@
 ﻿using System.Reflection;
+using GreatShop.Configurations;
 using GreatShop.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace GreatShop.Data.Ef;
 
 public class AppDbContext : DbContext
 {
+    private readonly DbConfig? _config;
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<Cart> Carts => Set<Cart>();
     public DbSet<Product> Products => Set<Product>();
-    
-    private readonly string? _connectionString;
-    private readonly bool? _enableQueriesLogging;
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public AppDbContext(IOptions<DbConfig> config)
+    {
+        if (config == null) throw new ArgumentNullException(nameof(config));
+        _config = config.Value;
+    }
+    
+    internal AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
 
-    internal AppDbContext(string? connectionString, bool enableQueriesLogging)
-    {
-        _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
-        _enableQueriesLogging = enableQueriesLogging;
-    }
-    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (_connectionString != null)
+        if (_config?.ConnectionString is {} connectionString)
         {
-            optionsBuilder.UseSqlite(_connectionString);
+            optionsBuilder.UseSqlite(connectionString);
         }
 
-        if (_enableQueriesLogging is true)
+        if (_config == null) return;
+        
+        if (_config.DisableQueriesLogging)
         {
-            optionsBuilder
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
+            optionsBuilder.UseLoggerFactory(CreateEmptyLoggerFactory());
         }
-        else if (_enableQueriesLogging is false)
+        else
         {
-            optionsBuilder
-                .UseLoggerFactory(CreateEmptyLoggerFactory());
+            if (_config.EnableDetailedErrors)
+                optionsBuilder.EnableDetailedErrors();
+            if (_config.EnableSensitiveDataLogging)
+                optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 

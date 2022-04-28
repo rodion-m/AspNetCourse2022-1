@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\GreatShop.Configurations\GreatShop.Configurations.csproj" />
       <ProjectReference Include="..\GreatShop.HttpModels\GreatShop.HttpModels.csproj" />
       <ProjectReference Include="..\infrastructure\GreatShop.Infrastructure\GreatShop.Infrastructure.csproj" />
       <ProjectReference Include="..\infrastructure\GreatShop.Data.Ef\GreatShop.Data.Ef.csproj" />

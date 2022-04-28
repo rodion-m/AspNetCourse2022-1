@@ -15,10 +15,10 @@ using Xunit;
 
 namespace GreatShop.Data.Test;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class UnitOfWorkFactoryEfTests : UnitOfWorkFactoryTests
 {
     private readonly IDbConnection _connection;
-    private readonly FakeDbContextFactory _dbContextFactory;
 
     public UnitOfWorkFactoryEfTests()
     {
@@ -30,8 +30,8 @@ public class UnitOfWorkFactoryEfTests : UnitOfWorkFactoryTests
             .UseNpgsql((NpgsqlConnection) _connection)
             .Options;
 
-        _dbContextFactory = new FakeDbContextFactory(options);
-        _unitOfWorkFactory = new UnitOfWorkFactoryEf(_dbContextFactory);
+        var dbContextFactory = new FakeDbContextFactory(options);
+        _unitOfWorkFactory = new UnitOfWorkFactoryEf(dbContextFactory);
     }
     
     public override void Dispose()

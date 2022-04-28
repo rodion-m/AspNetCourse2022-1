@@ -1,8 +1,10 @@
+using GreatShop.Configurations;
 using GreatShop.Data.Ef;
 using GreatShop.Domain;
 using GreatShop.Domain.Repositories;
 using GreatShop.Domain.Services;
 using GreatShop.Infrastructure;
+using GreatShop.WebApi;
 using GreatShop.WebApi.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -17,12 +19,8 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.AddDbContextFactory<AppDbContext>(
-        options => options
-                .UseSqlite(builder.Configuration["ConnectionString"])
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors()
-    );
+    builder.Services.Configure<DbConfig>(builder.Configuration.GetSection("DbConfig"));
+    builder.Services.AddDbContextFactory<AppDbContext>();
     builder.Services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactoryEf>();
     
     builder.Services.AddSingleton<IClock, UtcClock>();
