@@ -13,13 +13,13 @@ internal class ProductRepository : MongoGenericRepository<Product>, IProductRepo
 
     public async Task<IReadOnlyCollection<Product>> GetProducts(Guid categoryId, CancellationToken cancellationToken = default)
     {
-        return await _collection.Find(_session, it => it.CategoryId == categoryId)
+        return await Collection.Find(Session, it => it.CategoryId == categoryId)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<Product>> GetAllProducts(CancellationToken cancellationToken = default)
     {
-        return await _collection.Find(_session, _ => true)
+        return await Collection.Find(Session, _ => true)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 }

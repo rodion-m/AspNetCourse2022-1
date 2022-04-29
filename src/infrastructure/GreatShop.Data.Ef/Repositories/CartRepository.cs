@@ -12,9 +12,9 @@ internal class CartRepository : EfRepository<Cart>, ICartRepository
 
     public async Task<Cart> GetCartByAccountId(Guid accountId, CancellationToken cancellationToken = default)
     {
-        var cart = await _dbContext.Carts
+        var cart = await Entities
             .SingleOrDefaultAsync(it => it.AccountId == accountId, cancellationToken: cancellationToken)
-            ?? _dbContext.Carts.Local.Single(it => it.AccountId == accountId)
+            ?? Entities.Local.Single(it => it.AccountId == accountId)
             ;
 
         //await _dbContext.Entry(cart).Collection(it => it.Items).LoadAsync(cancellationToken);
@@ -24,9 +24,8 @@ internal class CartRepository : EfRepository<Cart>, ICartRepository
 
     public async Task<Cart?> FindCartByAccountId(Guid accountId, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Carts.FirstOrDefaultAsync(
+        return await Entities.FirstOrDefaultAsync(
             it => it.AccountId == accountId, cancellationToken: cancellationToken)
-            ?? _dbContext.Carts.FirstOrDefault(it => it.AccountId == accountId
-       );
+            ?? Entities.Local.FirstOrDefault(it => it.AccountId == accountId);
     }
 }

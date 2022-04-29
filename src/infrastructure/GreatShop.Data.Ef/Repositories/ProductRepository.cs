@@ -13,13 +13,13 @@ internal class ProductRepository : EfRepository<Product>, IProductRepository
     public async Task<IReadOnlyCollection<Product>> GetProducts(
         Guid categoryId, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Products.Where(it => it.CategoryId == categoryId)
+        return await Entities.Where(it => it.CategoryId == categoryId)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<Product>> GetAllProducts(CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Products
+        return await Entities
             .ToListAsync(cancellationToken: cancellationToken);
     }
 }

@@ -5,6 +5,7 @@ using GreatShop.Domain.Repositories;
 using GreatShop.Domain.Services;
 using GreatShop.Infrastructure;
 using GreatShop.WebApi;
+using GreatShop.WebApi.Extensions;
 using GreatShop.WebApi.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -22,6 +23,8 @@ try
     builder.Services.Configure<DbConfig>(builder.Configuration.GetSection("DbConfig"));
     builder.Services.AddDbContextFactory<AppDbContext>();
     builder.Services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactoryEf>();
+    //builder.Services.AddScoped<IUnitOfWork>(provider => provider.GetService<IUnitOfWorkFactory>().CreateAsync());
+    //builder.Services.AddRepository<IProductRepository>(uow => uow.ProductRepository);
     
     builder.Services.AddSingleton<IClock, UtcClock>();
     builder.Services.AddSingleton<HttpModelsMapper>();

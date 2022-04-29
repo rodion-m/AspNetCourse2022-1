@@ -14,4 +14,8 @@
       <ProjectReference Include="..\..\GreatShop.Domain\GreatShop.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="GreatShop.Data.Test" />
+    </ItemGroup>
+    
 </Project>

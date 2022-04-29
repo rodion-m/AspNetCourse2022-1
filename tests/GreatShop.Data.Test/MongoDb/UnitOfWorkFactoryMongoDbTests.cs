@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using GreatShop.Data.MongoDb;
-using GreatShop.Domain.Entities;
 using MongoDB.Driver;
-using Xunit;
 
-namespace GreatShop.Data.Test;
+namespace GreatShop.Data.Test.MongoDb;
 
 public class UnitOfWorkFactoryMongoDbTests : UnitOfWorkFactoryTests
 {

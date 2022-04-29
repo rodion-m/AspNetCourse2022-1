@@ -8,8 +8,9 @@ public class UnitOfWorkFactoryMongoDb : IUnitOfWorkFactory
 {
     private readonly IMongoClient _client;
     private readonly CollectionsSet _collections;
+    private TransactionOptions? _transactionOptions;
 
-    public UnitOfWorkFactoryMongoDb(IMongoClient client, string dbName)
+    internal UnitOfWorkFactoryMongoDb(IMongoClient client, string dbName)
     {
         if (dbName == null) throw new ArgumentNullException(nameof(dbName));
         _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -20,6 +21,8 @@ public class UnitOfWorkFactoryMongoDb : IUnitOfWorkFactory
             db.GetCollection<Product>("products")!
         );
     }
+
+    //TODO IOptions<MongodbConfig>
     public UnitOfWorkFactoryMongoDb(string connectionString, string dbName)
         : this(new MongoClient(connectionString), dbName)
     {
@@ -27,15 +30,31 @@ public class UnitOfWorkFactoryMongoDb : IUnitOfWorkFactory
 
     public async Task<IUnitOfWork> CreateAsync(
         bool startTransactionImmediately = true,
-        TransactionIsolationLevel isolationLevel = TransactionIsolationLevel.Default, //TODO
+        TransactionIsolationLevel isolationLevel = TransactionIsolationLevel.Default,
         CancellationToken cancellationToken = default)
     {
-        var session = await _client.StartSessionAsync(null, cancellationToken);
+        _transactionOptions = CreateTransactionOptions(isolationLevel);
+        var sessionOptions = CreateSessionOptions(_transactionOptions);
+        var session = await _client.StartSessionAsync(sessionOptions, cancellationToken);
         var unitOfWorkMongoDb = new UnitOfWorkMongoDb(_collections, session);
         if (startTransactionImmediately)
         {
-            unitOfWorkMongoDb.StartTransaction(); //new TransactionOptions()
+            unitOfWorkMongoDb.StartTransaction(_transactionOptions);
         }
+
         return unitOfWorkMongoDb;
+    }
+
+    private ClientSessionOptions CreateSessionOptions(TransactionOptions defaultTransactionOptions)
+    {
+        return new ClientSessionOptions()
+        {
+            DefaultTransactionOptions = defaultTransactionOptions
+        };
+    }
+
+    private TransactionOptions CreateTransactionOptions(TransactionIsolationLevel isolationLevel)
+    {
+        return new TransactionOptions(); //TODO
     }
 }

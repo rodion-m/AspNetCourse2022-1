@@ -12,9 +12,9 @@ namespace GreatShop.Data.Test;
 public abstract partial class UnitOfWorkFactoryTests : IDisposable
 {
     protected IUnitOfWorkFactory _unitOfWorkFactory = null!;
-    partial void LoadEnvironmentVariables();
+    static partial void LoadEnvironmentVariables();
 
-    protected UnitOfWorkFactoryTests()
+    internal UnitOfWorkFactoryTests()
     {
         LoadEnvironmentVariables();
     }

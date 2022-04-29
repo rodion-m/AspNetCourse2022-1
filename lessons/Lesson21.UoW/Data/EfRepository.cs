@@ -3,36 +3,37 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lesson21.UoW.Data;
 
-public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+public class EfRepository<TEntity> 
+    : IRepository<TEntity> where TEntity : class, IEntity
 {
-    protected readonly AppDbContext _dbContext;
+    private readonly AppDbContext _dbContext;
+    protected DbSet<TEntity> Entities => _dbContext.Set<TEntity>();
+
 
     public EfRepository(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    protected DbSet<TEntity> _entities => _dbContext.Set<TEntity>();
-
-    public Task<TEntity> GetById(Guid Id)
+    public virtual async Task<TEntity> GetById(Guid id, CancellationToken cancellationToken = default)
     {
-        return _entities.FirstAsync(it => it.Id == Id);
+        return await Entities.FindAsync(new object?[] { id }, cancellationToken: cancellationToken)
+               ?? Entities.Local.First(it => it.Id == id);
     }
 
-    public async Task<IReadOnlyList<TEntity>> GetAll()
+    public virtual async Task<TEntity?> FindById(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _entities.ToListAsync();
+        return await Entities.FindAsync(new object?[] { id }, cancellationToken: cancellationToken)
+               ?? Entities.Local.FirstOrDefault(it => it.Id == id);    }
+
+    public virtual async ValueTask Add(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        await Entities.AddAsync(entity, cancellationToken);
     }
 
-    public async Task Add(TEntity entity)
+    public virtual ValueTask Update(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await _entities.AddAsync(entity);
-        //await _dbContext.SaveChangesAsync();
-    }
-
-    public async Task Update(TEntity TEntity)
-    {
-        _dbContext.Entry(TEntity).State = EntityState.Modified;
-        //await _dbContext.SaveChangesAsync();
+        Entities.Update(entity);
+        return ValueTask.CompletedTask;
     }
 }

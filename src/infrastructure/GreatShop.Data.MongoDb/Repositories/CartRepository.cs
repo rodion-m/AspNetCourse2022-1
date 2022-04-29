@@ -14,13 +14,13 @@ internal class CartRepository : MongoGenericRepository<Cart>, ICartRepository
 
     public Task<Cart> GetCartByAccountId(Guid accountId, CancellationToken cancellationToken = default)
     {
-        return _collection.Find(_session, it => it.AccountId == accountId)
+        return Collection.Find(Session, it => it.AccountId == accountId)
             .SingleAsync(cancellationToken: cancellationToken);
     }
 
     public Task<Cart?> FindCartByAccountId(Guid accountId, CancellationToken cancellationToken = default)
     {
-        return _collection.Find(_session, it => it.AccountId == accountId)
+        return Collection.Find(Session, it => it.AccountId == accountId)
             .SingleOrDefaultAsync(cancellationToken: cancellationToken)!;
     }
 }
