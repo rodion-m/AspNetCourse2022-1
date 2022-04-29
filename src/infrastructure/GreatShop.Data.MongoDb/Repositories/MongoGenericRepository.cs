@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace GreatShop.Data.MongoDb.Repositories;
 
-internal class MongoGenericRepository<TEntity> 
+internal abstract class MongoGenericRepository<TEntity> 
     : IRepository<TEntity> where TEntity : IEntity
 {
     protected readonly IMongoCollection<TEntity> Collection;

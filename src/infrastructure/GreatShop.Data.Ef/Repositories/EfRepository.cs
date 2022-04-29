@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GreatShop.Data.Ef.Repositories;
 
-internal class EfRepository<TEntity> 
+internal abstract class EfRepository<TEntity> 
     : IRepository<TEntity> where TEntity : class, IEntity
 {
     private readonly AppDbContext _dbContext;
