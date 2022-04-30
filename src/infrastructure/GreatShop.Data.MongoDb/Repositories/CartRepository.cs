@@ -1,5 +1,6 @@
 ﻿using GreatShop.Domain.Entities;
 using GreatShop.Domain.Repositories;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 namespace GreatShop.Data.MongoDb.Repositories;

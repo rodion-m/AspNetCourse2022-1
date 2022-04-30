@@ -16,11 +16,11 @@ using Xunit;
 namespace GreatShop.Data.Test;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public class UnitOfWorkFactoryEfTests : UnitOfWorkFactoryTests
+public class EfTests : DbTests
 {
     private readonly IDbConnection _connection;
 
-    public UnitOfWorkFactoryEfTests()
+    public EfTests()
     {
         var connectionString = Environment.GetEnvironmentVariable("postgres_connection_string")!;
         ArgumentNullException.ThrowIfNull(connectionString);
@@ -33,7 +33,7 @@ public class UnitOfWorkFactoryEfTests : UnitOfWorkFactoryTests
         var dbContextFactory = new FakeDbContextFactory(options);
         _unitOfWorkFactory = new UnitOfWorkFactoryEf(dbContextFactory);
     }
-    
+
     public override void Dispose()
     {
         _connection.Dispose();

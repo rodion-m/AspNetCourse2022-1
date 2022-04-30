@@ -7,13 +7,13 @@ namespace GreatShop.Data.Ef.Repositories;
 internal abstract class EfRepository<TEntity> 
     : IRepository<TEntity> where TEntity : class, IEntity
 {
-    private readonly AppDbContext _dbContext;
-    protected DbSet<TEntity> Entities => _dbContext.Set<TEntity>();
+    protected readonly AppDbContext DbContext;
+    protected DbSet<TEntity> Entities => DbContext.Set<TEntity>();
 
 
-    public EfRepository(AppDbContext dbContext)
+    protected EfRepository(AppDbContext dbContext)
     {
-        _dbContext = dbContext;
+        DbContext = dbContext;
     }
 
     public virtual async Task<TEntity> GetById(Guid id, CancellationToken cancellationToken = default)

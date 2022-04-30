@@ -10,7 +10,7 @@ internal abstract class MongoGenericRepository<TEntity>
     protected readonly IMongoCollection<TEntity> Collection;
     protected readonly IClientSessionHandle Session;
 
-    public MongoGenericRepository(IMongoCollection<TEntity> collection, IClientSessionHandle session)
+    protected MongoGenericRepository(IMongoCollection<TEntity> collection, IClientSessionHandle session)
     {
         Collection = collection ?? throw new ArgumentNullException(nameof(collection));
         Session = session ?? throw new ArgumentNullException(nameof(session));

@@ -9,14 +9,30 @@ using Xunit;
 
 namespace GreatShop.Data.Test;
 
-public abstract partial class UnitOfWorkFactoryTests : IDisposable
+public abstract partial class DbTests : IDisposable
 {
     protected IUnitOfWorkFactory _unitOfWorkFactory = null!;
     static partial void LoadEnvironmentVariables();
 
-    internal UnitOfWorkFactoryTests()
+    internal DbTests()
     {
         LoadEnvironmentVariables();
+    }
+    
+    [Fact]
+    public async Task Adding_item_to_a_cart_works()
+    {
+        var unitOfWork = await _unitOfWorkFactory.CreateAsync();
+        var cartRepository = unitOfWork.CartRepository;
+        var cartId = Guid.NewGuid();
+        await cartRepository.Add(new Cart(cartId, Guid.NewGuid(), new List<CartItem>()
+        {
+            new(Guid.NewGuid(), Guid.NewGuid(), 1),
+            new(Guid.NewGuid(), Guid.NewGuid(), 2),
+        }));
+        await unitOfWork.CommitAsync();
+        var cart = await cartRepository.GetById(cartId);
+        Assert.Equal(2, cart.ItemCount);
     }
     
     [Fact]
@@ -77,7 +93,7 @@ public abstract partial class UnitOfWorkFactoryTests : IDisposable
     [Fact]
     public async Task Cancel_document_adding_works()
     {
-        if (this is UnitOfWorkFactoryEfTests)
+        if (this is EfTests)
         {
             Assert.True(true, "Document adding cancellation in EF skipped since it's not supported.");
             return;

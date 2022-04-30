@@ -4,12 +4,12 @@ using MongoDB.Driver;
 
 namespace GreatShop.Data.Test.MongoDb;
 
-public class UnitOfWorkFactoryMongoDbTests : UnitOfWorkFactoryTests
+public class MongoDbTests : DbTests
 {
     private const string DbName = "db_test";
     private readonly MongoClient _client;
     
-    public UnitOfWorkFactoryMongoDbTests()
+    public MongoDbTests()
     {
         var connectionString = Environment.GetEnvironmentVariable("mongodb_connection_string")!;
         ArgumentNullException.ThrowIfNull(connectionString);

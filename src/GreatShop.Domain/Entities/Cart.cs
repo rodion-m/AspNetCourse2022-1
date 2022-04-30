@@ -1,7 +1,11 @@
-﻿namespace GreatShop.Domain.Entities;
+﻿using System.Linq.Expressions;
+
+namespace GreatShop.Domain.Entities;
 
 public record Cart : IEntity
 {
+    public const string NameOfItemsField = nameof(_items);
+
     protected Cart()
     {
         _items = new List<CartItem>();
@@ -16,7 +20,7 @@ public record Cart : IEntity
     public Guid Id { get; init; }
     public Guid AccountId { get; set; }
     
-    private readonly List<CartItem> _items;
+    private List<CartItem> _items;
     public IReadOnlyCollection<CartItem> Items => _items.AsReadOnly();
     
     public int ItemCount => Items.Count;
@@ -35,7 +39,7 @@ public record Cart : IEntity
         }
         else
         {
-            cartItem = new CartItem() { Id = Guid.Empty, ProductId = product.Id, Quantity = quantity };
+            cartItem = new CartItem(Guid.Empty, product.Id, quantity);
             _items.Add(cartItem);
         }
     }
@@ -44,6 +48,14 @@ public record Cart : IEntity
 
 public record CartItem : IEntity
 {
+    protected CartItem() {}
+    public CartItem(Guid id, Guid productId, double quantity)
+    {
+        Id = id;
+        ProductId = productId;
+        Quantity = quantity;
+    }
+
     public Guid Id { get; init; }
     
     public Guid ProductId { get; init; }

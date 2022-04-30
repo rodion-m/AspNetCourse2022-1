@@ -14,6 +14,7 @@ public class UnitOfWorkFactoryMongoDb : IUnitOfWorkFactory
     {
         if (dbName == null) throw new ArgumentNullException(nameof(dbName));
         _client = client ?? throw new ArgumentNullException(nameof(client));
+        UnitOfWorkMongoDb.RegisterMappings();
         var db = _client.GetDatabase(dbName);
         _collections = new CollectionsSet(
             db.GetCollection<Account>("accounts")!,

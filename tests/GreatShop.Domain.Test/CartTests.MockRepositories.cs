@@ -35,12 +35,7 @@ public class CartTests_MockRepositories
             accountId: accountId,
             items: new List<CartItem>()
             {
-                new()
-                {
-                    Id = new Guid("06E192E2-AD6B-4E5E-9B59-80ADCCD0C767"),
-                    ProductId = productId,
-                    Quantity = 1d,
-                }
+                new(new Guid("06E192E2-AD6B-4E5E-9B59-80ADCCD0C767"), productId, 1)
             }
         );
         cartRepositoryMock.Setup(

@@ -43,12 +43,7 @@ public class CartTests_Encapsulated
             accountId: new Guid("283A4CDC-2979-4180-9821-A219D15E25E4"),
             items: new List<CartItem>()
             {
-                new()
-                {
-                    Id = new Guid("06E192E2-AD6B-4E5E-9B59-80ADCCD0C767"),
-                    ProductId = productId,
-                    Quantity = 1d,
-                }
+                new(new Guid("06E192E2-AD6B-4E5E-9B59-80ADCCD0C767"), productId, 1d)
             }
         );
     }

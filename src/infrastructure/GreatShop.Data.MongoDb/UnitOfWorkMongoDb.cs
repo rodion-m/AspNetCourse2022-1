@@ -1,5 +1,7 @@
 using GreatShop.Data.MongoDb.Repositories;
+using GreatShop.Domain.Entities;
 using GreatShop.Domain.Repositories;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 namespace GreatShop.Data.MongoDb;
@@ -37,6 +39,11 @@ internal class UnitOfWorkMongoDb : IUnitOfWork
         _session = session ?? throw new ArgumentNullException(nameof(session));
     }
 
+    static UnitOfWorkMongoDb()
+    {
+        RegisterMappings();
+    }
+
     public void StartTransaction(TransactionOptions? transactionOptions = null)
     {
         _session.StartTransaction(transactionOptions);
@@ -71,4 +78,18 @@ internal class UnitOfWorkMongoDb : IUnitOfWork
         _session.Dispose();
     }
 
+    private static bool _mappingsRegistered;
+    public static void RegisterMappings()
+    {
+        if (!_mappingsRegistered)
+        {
+            BsonClassMap.RegisterClassMap<Cart>(cm =>
+            {
+                cm.AutoMap();
+                cm.UnmapMember(it => it.Items);
+                cm.MapField(Cart.NameOfItemsField).SetElementName("Items");
+            });
+            _mappingsRegistered = true;
+        }
+    }
 }
