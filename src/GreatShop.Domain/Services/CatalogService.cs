@@ -14,7 +14,7 @@ public class CatalogService
         _clock = clock;
     }
 
-    public async Task<IReadOnlyCollection<Product>> GetProducts(Guid categoryId)
+    public async Task<IReadOnlyList<Product>> GetProducts(Guid categoryId)
     {
         await using var uow = await _uowFactory.CreateAsync();
         var products = await uow.ProductRepository.GetProducts(categoryId);
@@ -32,7 +32,7 @@ public class CatalogService
         return await uow.ProductRepository.GetById(productId);
     }
 
-    public async Task<IReadOnlyCollection<Product>> GetAllProducts()
+    public async Task<IReadOnlyList<Product>> GetAllProducts()
     {
         await using var uow = await _uowFactory.CreateAsync();
         return await uow.ProductRepository.GetAllProducts();
