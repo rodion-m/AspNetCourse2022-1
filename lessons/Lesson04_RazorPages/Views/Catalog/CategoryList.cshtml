@@ -1,0 +1,11 @@
+﻿@model Lesson04_HttpModels.Category[]
+
+@{
+	ViewData["Title"] = "Список категорий";
+}
+
+<h2>@ViewData["Title"]</h2>
+@foreach (var category in Model)
+{
+	<div>@category.CategoryId :: @category.Name</div>
+}

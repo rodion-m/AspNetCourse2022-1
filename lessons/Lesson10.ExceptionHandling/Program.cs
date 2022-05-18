@@ -1,5 +1,5 @@
 using Lesson10.ExceptionHandling;
-using Lesson8.Configurations.Services;
+using Lesson08.Configurations.Services;
 using Serilog;
 using Serilog.Events;
 
