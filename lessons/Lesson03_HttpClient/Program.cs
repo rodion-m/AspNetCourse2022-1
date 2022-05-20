@@ -4,4 +4,6 @@ using Lesson03_HttpClient;
 
 var shopClient = new ShopClient("http://localhost:5198/");
 
-Console.WriteLine(await shopClient.GetProducts());
+var products = await shopClient.GetProducts();
+
+Console.WriteLine(products);

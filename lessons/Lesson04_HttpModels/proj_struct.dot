@@ -1,0 +1,14 @@
+/*
+	App: https://graphviz.org/
+	Plugin: https://plugins.jetbrains.com/plugin/10312-dot-language
+*/
+
+digraph G {
+    rankdir=TB
+	bgcolor="#282c34"
+	node [color="white", fontcolor="white"]
+	"MyPoject.HttpModels" [color="white"]
+    "MyPoject.HttpServer" -> "MyPoject.HttpModels" [color="white"]
+	"MyPoject.HttpApiClient" -> "MyPoject.HttpModels" [color="white"]
+	"MyPoject.HttpClientExample" -> "MyPoject.HttpApiClient" [color="white"]
+}

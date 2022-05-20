@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
-using System.Text.Json;
-using Lesson04_HttpModels;
+using Lesson4_HttpModels;
 
 namespace Lesson03_HttpClient;
 
