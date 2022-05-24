@@ -2,11 +2,14 @@
 using Lesson04.HttpModels;
 using Lesson04.RazorPagesApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Lesson04.RazorPagesApp.Controllers;
 
 public class CatalogController : Controller
 {
+    public string? Message { get; set; }
+    
     private static readonly ConcurrentBag<Category> _categories = new()
     {
         new Category(1, 0, "Продукты"), 
@@ -40,19 +43,21 @@ public class CatalogController : Controller
     }
 
     [HttpGet]
-    public IActionResult CatalogEditor()
+    public IActionResult CategoryAdding()
     {
         return View();
     }
     
     [HttpPost]
-    public IActionResult CatalogEditor([FromForm] CategoryAddingModel model)
+    public IActionResult CategoryAdding([FromForm] CategoryAddingModel model)
     {
         if (!ModelState.IsValid)
         {
-            return ValidationProblem();
+            ViewData["Message"] = "Некорректные данные. Исправьте ошибки и попробуйте еще раз.";
+            return View(model);
         }
         _categories.Add(new Category(model.Id, model.ParentId, model.Name));
-        return View(model: "Категория добавлена");
+        ViewData["Message"] = "Категория добавлена";
+        return View();
     }
 }

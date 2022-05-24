@@ -1,0 +1,19 @@
+﻿@model CategoryAddingModel?
+
+@{
+	ViewData["Title"] = "Создание новой категории";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<form method="post">
+	Id: <input type="text" name="id" value="@Model?.Id" required/>
+	<br/>ParentId: <input type="text" name="parent_id" value="@Model?.ParentId" required/>
+	<br/>Имя: <input type="text" name="name" value="@Model?.Name" required/>
+	<br/><input type="submit" value="Создать"/>
+</form>
+
+@* <form asp-controller="Catalog" asp-action="CatalogEditor" method="post"> *@
+@* 	 *@
+@* </form> *@
