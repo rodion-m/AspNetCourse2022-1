@@ -1,0 +1,12 @@
+﻿@model List<Lesson04.HttpModels.Category>
+
+@{
+	ViewData["Title"] = "Список категорий";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h3>Кол-во: @Model.Count</h3>
+@foreach (var category in Model)
+{
+	<div>@category.Name (@category.CategoryId)</div>
+}

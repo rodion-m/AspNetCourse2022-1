@@ -1,0 +1,13 @@
+﻿@using System.Globalization
+@model IReadOnlyCollection<Lesson04.HttpModels.Product>
+
+@{
+	ViewData["Title"] = "Products";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@foreach (var product in Model)
+{
+	<div>@product.Name: @product.Price.ToString("C2", new CultureInfo("ru-RU"))</div>
+}

@@ -1,0 +1,20 @@
+﻿@model string
+
+@{
+	ViewData["Title"] = "Создание новой категории";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h3>@Model</h3>
+
+<form method="post">
+	Id: <input type="text" name="id" value="" required/>
+	<br/>
+	Имя: <input type="text" name="name" value="" required/>
+	<br/>
+	<input type="submit" value="Создать"/>
+</form>
+
+@* <form asp-controller="Catalog" asp-action="CatalogEditor" method="post"> *@
+@* 	 *@
+@* </form> *@

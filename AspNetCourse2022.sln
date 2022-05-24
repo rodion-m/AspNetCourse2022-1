@@ -1,18 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson02_HttpApi", "lessons\Lesson02_HttpApi\Lesson02_HttpApi.csproj", "{E9BE5DF3-B0E8-48E2-91BB-15AD666641CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson02.HttpApi", "lessons\Lesson02.HttpApi\Lesson02.HttpApi.csproj", "{E9BE5DF3-B0E8-48E2-91BB-15AD666641CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson03_HttpClient", "lessons\Lesson03_HttpClient\Lesson03_HttpClient.csproj", "{3006B252-3578-4CDA-A69A-D820B1098FA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson03.HttpApiClient", "lessons\Lesson03.HttpApiClient\Lesson03.HttpApiClient.csproj", "{3006B252-3578-4CDA-A69A-D820B1098FA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson04_HttpModels", "lessons\Lesson04_HttpModels\Lesson04_HttpModels.csproj", "{2E1C5594-8362-4474-A353-038543F688D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson04.HttpModels", "lessons\Lesson04.HttpModels\Lesson04.HttpModels.csproj", "{2E1C5594-8362-4474-A353-038543F688D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson04_ApiClientRefit", "lessons\Lesson04_ApiClientRefit\Lesson04_ApiClientRefit.csproj", "{E210355A-A1C2-459E-B9E9-57DE28B0DD63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson04.ApiClientRefit", "lessons\Lesson04.ApiClientRefit\Lesson04.ApiClientRefit.csproj", "{E210355A-A1C2-459E-B9E9-57DE28B0DD63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson04_RazorPages", "lessons\Lesson04_RazorPages\Lesson04_RazorPages.csproj", "{972863BF-0FEF-4D89-8CD7-4432DE74EBA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson04.RazorPagesApp", "lessons\Lesson04.RazorPagesApp\Lesson04.RazorPagesApp.csproj", "{972863BF-0FEF-4D89-8CD7-4432DE74EBA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson07_DI", "lessons\Lesson07_DI\Lesson07_DI.csproj", "{B125D1A2-A7CB-4EDF-88C6-A0310BA7B526}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson07.DI", "lessons\Lesson07.DI\Lesson07.DI.csproj", "{B125D1A2-A7CB-4EDF-88C6-A0310BA7B526}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson07_Mail", "lessons\Lesson07_Mail\Lesson07_Mail.csproj", "{D187FF16-E81A-48F9-BCD2-440C7FBB3753}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson07.Mail", "lessons\Lesson07.Mail\Lesson07.Mail.csproj", "{D187FF16-E81A-48F9-BCD2-440C7FBB3753}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson08.Configurations", "lessons\Lesson08.Configurations\Lesson08.Configurations.csproj", "{B1FC3BFB-1B83-4193-9C21-6D9F28F23426}"
 EndProject
