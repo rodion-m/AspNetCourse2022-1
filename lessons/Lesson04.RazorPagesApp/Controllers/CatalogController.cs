@@ -28,17 +28,16 @@ public class CatalogController : Controller
         });
     }
 
-    public IActionResult CategoryList(int parentId)
+    public IActionResult CategoryList(int? parentId)
     {
+        if (parentId is null)
+        {
+            return View(_categories);
+        }
+
         var cats = _categories.Where(it => it.ParentId == parentId);
         return View(cats.ToList());
     }
-
-    public IActionResult CategoryList()
-    {
-        return View(_categories.ToList());
-    }
-
 
     [HttpGet]
     public IActionResult CatalogEditor()
@@ -53,7 +52,6 @@ public class CatalogController : Controller
         {
             return ValidationProblem();
         }
-
         _categories.Add(new Category(model.Id, model.ParentId, model.Name));
         return View(model: "Категория добавлена");
     }
