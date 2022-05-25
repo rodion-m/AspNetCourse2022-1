@@ -2,14 +2,14 @@
 
 public class Category
 {
-    public Category(long CategoryId, long ParentId, string Name)
+    public Category(long id, long ParentId, string Name)
     {
-        this.CategoryId = CategoryId;
+        this.Id = id;
         this.ParentId = ParentId;
         this.Name = Name;
     }
 
-    public long CategoryId { get; set; }
+    public long Id { get; set; }
     public long ParentId { get; set; }
     public string Name { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿@model Lesson04.HttpModels.Category
+﻿@model CategoryModel
 
 @{
 	ViewData["Title"] = "Редактирование категории";
@@ -7,29 +7,38 @@
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
-@using (Html.BeginForm())
+
+@if (Model is not null)
 {
-    @Html.AntiForgeryToken()    
-    <div class="form-horizontal">
-        <h4>Категория</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
+    @using (Html.BeginForm())
+    {
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @* @Html.EditorForModel() *@
+            <div class="form-group">
+                @Html.LabelFor(model => model.ParentId, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ParentId)
+                    @Html.ValidationMessageFor(model => model.ParentId)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Изменить" class="btn btn-primary"/>
+                </div>
             </div>
         </div>
-        @*Fields removed for brevity.*@        
-
-
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+    }
+}
+else
+{
+    <div style="color: red">Категория не найдена</div>
 }

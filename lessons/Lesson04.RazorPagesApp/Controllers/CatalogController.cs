@@ -35,10 +35,24 @@ public class CatalogController : Controller
     {
         if (parentId is null)
         {
-            return View(_categories);
+            return View(_categories      
+                .OrderBy(it => it.Id).ToList()
+            );
         }
 
-        var cats = _categories.Where(it => it.ParentId == parentId);
+        var parent = _categories.FirstOrDefault(it => it.Id == parentId);
+        if (parent is not null)
+        {
+            ViewData["Title"] = $"Список категорий в {parent.Name}";
+        }
+        else
+        {
+            ViewData["Title"] = "Такой категории не существует";
+        }
+
+        var cats = _categories
+            .Where(it => it.ParentId == parentId)
+            .OrderBy(it => it.Id);
         return View(cats.ToList());
     }
 
@@ -49,7 +63,7 @@ public class CatalogController : Controller
     }
     
     [HttpPost]
-    public IActionResult CategoryAdding([FromForm] CategoryAddingModel model)
+    public IActionResult CategoryAdding([FromForm] CategoryModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -59,5 +73,29 @@ public class CatalogController : Controller
         _categories.Add(new Category(model.Id, model.ParentId, model.Name));
         ViewData["Message"] = "Категория добавлена";
         return View();
+    }
+    
+    [HttpGet]
+    public IActionResult CategoryEditing(int categoryId)
+    {
+        var maybeCategory = _categories.FirstOrDefault(it => it.Id == categoryId);
+        return View(maybeCategory is { } cat 
+            ? new CategoryModel(cat.Id, cat.ParentId, cat.Name) 
+            : null);
+    }
+    
+    [HttpPost]
+    public IActionResult CategoryEditing([FromQuery] int categoryId, [FromForm] CategoryModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var cat = _categories.First(it => it.Id == categoryId);
+        cat.ParentId = model.ParentId;
+        cat.Name = model.Name;
+        ViewData["Message"] = "Категория изменена";
+        return View(model);
     }
 }

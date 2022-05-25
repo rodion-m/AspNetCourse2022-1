@@ -1,4 +1,4 @@
-﻿@model CategoryAddingModel?
+﻿@model CategoryModel?
 
 @{
 	ViewData["Title"] = "Создание новой категории";
@@ -9,7 +9,7 @@
 
 <form method="post">
 	Id: <input type="text" name="id" value="@Model?.Id" required/>
-	<br/>ParentId: <input type="text" name="parent_id" value="@Model?.ParentId" required/>
+	<br/>ParentId: <input type="text" name="ParentId" value="@Model?.ParentId" required/>
 	<br/>Имя: <input type="text" name="name" value="@Model?.Name" required/>
 	<br/><input type="submit" value="Создать"/>
 </form>

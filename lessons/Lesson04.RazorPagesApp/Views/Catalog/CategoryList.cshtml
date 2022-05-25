@@ -1,12 +1,21 @@
 ﻿@model IReadOnlyCollection<Lesson04.HttpModels.Category>
 
 @{
-	ViewData["Title"] = "Список категорий";
+	ViewData["Title"] ??= "Список категорий";
 }
 
 <h2>@ViewData["Title"]</h2>
-<h3>Кол-во: @Model.Count</h3>
+<h3>Кол-во категорий: @Model.Count</h3>
 @foreach (var category in Model)
 {
-	<div>@category.Name (@category.CategoryId)</div>
+	<div>
+		@Html.ActionLink(
+			$"{category.Name} (Id: {category.Id})",
+			"CategoryList", "Catalog",
+			new { parentId = category.Id })
+			@Html.ActionLink(
+				" [Изменить]",
+				"CategoryEditing",
+				new { categoryId = category.Id })
+	</div>
 }
