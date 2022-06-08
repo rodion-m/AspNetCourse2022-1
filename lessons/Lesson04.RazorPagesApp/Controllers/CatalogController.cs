@@ -2,7 +2,6 @@
 using Lesson04.HttpModels;
 using Lesson04.RazorPagesApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Lesson04.RazorPagesApp.Controllers;
 
@@ -15,7 +14,7 @@ public class CatalogController : Controller
         new Category(1, 0, "Продукты"), 
             new Category(10, 1, "Молоко"), 
             new Category(11, 1, "Кофе"),
-            
+        
         new Category(2, 0, "Электроника"),  
             new Category(20, 2, "Смартфоны"),
             new Category(21, 2, "Смарт-часы"),
@@ -23,12 +22,13 @@ public class CatalogController : Controller
 
     public IActionResult ProductsList(int categoryId, string filterData)
     {
-        return View(new[]
+        Product[] products = new[]
         {
             new Product(Guid.NewGuid(), "Чистый код", 1000m),
             new Product(Guid.NewGuid(), "Элегантные объекты", 1200m),
             new Product(Guid.NewGuid(), "Чистая архитектура", 1500m)
-        });
+        };
+        return View(products);
     }
 
     public IActionResult CategoryList(int? parentId)
@@ -53,6 +53,7 @@ public class CatalogController : Controller
         var cats = _categories
             .Where(it => it.ParentId == parentId)
             .OrderBy(it => it.Id);
+            
         return View(cats.ToList());
     }
 
@@ -70,6 +71,7 @@ public class CatalogController : Controller
             ViewData["Message"] = "Некорректные данные. Исправьте ошибки и попробуйте еще раз.";
             return View(model);
         }
+        
         _categories.Add(new Category(model.Id, model.ParentId, model.Name));
         ViewData["Message"] = "Категория добавлена";
         return View();

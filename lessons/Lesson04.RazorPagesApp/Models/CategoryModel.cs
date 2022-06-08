@@ -22,6 +22,6 @@ public class CategoryModel
     public long ParentId { get; set; }
 
     [Display(Name = "Название")]
-    [Required]
+    [Required, StringLength(maximumLength: 30)]
     public string Name { get; set; } = "";
 }
