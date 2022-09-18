@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GreatShop.Data.Ef.Configuration;
 
-class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Cart>
+class CartEntityTypeConfiguration : IEntityTypeConfiguration<Cart>
 {
     public void Configure(EntityTypeBuilder<Cart> conf)
     {

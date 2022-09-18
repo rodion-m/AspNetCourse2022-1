@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Lesson14.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lesson13.EFCore.Data;
 

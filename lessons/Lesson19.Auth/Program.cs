@@ -23,8 +23,10 @@ builder.Services.AddCors();
 
 builder.Services.AddHttpLogging(options =>
 {
-    options.LoggingFields = HttpLoggingFields.RequestHeaders | HttpLoggingFields.ResponseHeaders |
-                            HttpLoggingFields.ResponseBody;
+    options.LoggingFields = HttpLoggingFields.RequestHeaders 
+                            | HttpLoggingFields.ResponseHeaders 
+                            | HttpLoggingFields.RequestBody
+                            | HttpLoggingFields.ResponseBody;
 });
 
 builder.Services.AddControllers();

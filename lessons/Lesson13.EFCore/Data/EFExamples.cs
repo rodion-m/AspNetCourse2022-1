@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Lesson14.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lesson13.EFCore.Data;
 
@@ -8,7 +9,7 @@ public class EFExamples
     {
         using var db = new AppDbContext(new DbContextOptions<AppDbContext>());
         Console.WriteLine("Inserting a new blog");
-        db.Add(new Order { Phone = "http://blogs.msdn.com/adonet" });
+        db.Add(new Order { Phone = "+799912345678" });
         await db.SaveChangesAsync();
 
         // Read

@@ -30,20 +30,5 @@ public class AppExceptionFilter1 : Attribute, IExceptionFilter, IOrderedFilter
             _ => null
         };
     }
-
     
-}
-
-public class IncorrectPasswordException : Exception
-{
-}
-
-public class EmailNotFoundException : Exception
-{
-    public EmailNotFoundException(string email)
-    {
-        Email = email;
-    }
-
-    public string Email { get; }
 }

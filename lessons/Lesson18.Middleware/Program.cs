@@ -1,5 +1,7 @@
 using System.Net.Mime;
+using Lesson18.Middleware.Middlewares;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +22,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseAuthorization();
 
 app.UseExceptionHandler(exceptionHandlerApp =>
@@ -40,7 +42,10 @@ app.UseExceptionHandler(exceptionHandlerApp =>
         if (exceptionHandlerPathFeature?.Error is FileNotFoundException)
             await context.Response.WriteAsync(" The file was not found.");
 
-        if (exceptionHandlerPathFeature?.Path == "/") await context.Response.WriteAsync(" Page: Home.");
+        if (exceptionHandlerPathFeature?.Path == "/")
+        {
+            await context.Response.WriteAsync(" Page: Home.");
+        }
     });
 });
 

@@ -1,3 +1,4 @@
+using Lesson08.Configurations;
 using Lesson08.Configurations.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<SmtpCredentials>(
     builder.Configuration.GetSection("SmtpCredentials"));
 builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
+builder.Services.AddScoped<MyService>();
+
 // builder.Services.AddScoped<UserData>(provider =>
 // {
 //     var stateManager = provider.GetService<StateManager>();
@@ -37,7 +40,13 @@ builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
 var app = builder.Build();
 
-app.MapGet("/", (IEmailSender emailSender)
+
+app.MapGet("/", (MyService service) =>
+{
+});
+
+
+app.MapGet("/mail", (IEmailSender emailSender)
     => emailSender.SendAsync("asp2022@rodion-m.ru", "rody66@yandex.ru", "asd", "dsa"));
 
 app.Run();
