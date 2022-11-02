@@ -1,6 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using Lesson03.HttpApiClient;
+﻿using Lesson03.HttpApiClient;
+using Lesson04.HttpModels;
 
 var shopClient = new ShopClient("http://localhost:5198/");
 
