@@ -6,21 +6,23 @@ Console.OutputEncoding = Encoding.UTF8;
 
 var httpClient = new HttpClient()
 {
-    BaseAddress = new Uri("https://localhost:7299")
+    BaseAddress = new Uri("https://localhost:7022")
 };
-//await httpClient.GetAsync("/products/clear"); //Очищаем список товаров
-//await httpClient.GetAsync("/");
-for (int i = 0; i < 1000; i++)
-{
-    httpClient.GetAsync("/wait");
-}
-Thread.Sleep(TimeSpan.FromMinutes(1));
+await httpClient.DeleteAsync("/books"); //Очищаем список товаров
 
-return;
-await Parallel.ForEachAsync(Product.GenerateProducts(1000), async (product, _) =>
+// //await httpClient.GetAsync("/");
+// for (int i = 0; i < 1000; i++)
+// {
+//     httpClient.GetAsync("/wait");
+// }
+// Thread.Sleep(TimeSpan.FromMinutes(1));
+//
+// return;
+await Parallel.ForEachAsync(
+    Product.GenerateProducts(1000), 
+    async (product, _) =>
 {
-    await httpClient.GetAsync("/wait");
-    //await httpClient.PostAsync("/Catalogs/CreateGoods", product.ToFormData());
+    await httpClient.PostAsJsonAsync("/books", product);
     Console.WriteLine($"added {product.Name}");
 });
 Console.WriteLine("Done");
