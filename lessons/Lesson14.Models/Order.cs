@@ -3,6 +3,7 @@ namespace Lesson14.Models;
 
 public class Order : IEntity
 {
+    protected Order() {}
     public string Phone { get; set; } // GET И SET
     public decimal TotalPrice { get; set; } // GET И SET
     public OrderStatus Status { get; set; }

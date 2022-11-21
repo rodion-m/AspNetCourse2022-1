@@ -14,10 +14,11 @@ public class CatalogController : ControllerBase
     private readonly CatalogService _catalogService;
     private readonly HttpModelsMapper _mapper;
 
-    public CatalogController(CatalogService catalogService, HttpModelsMapper mapper)
+    public CatalogController(
+        CatalogService catalogService, HttpModelsMapper mapper)
     {
-        _catalogService = catalogService;
-        _mapper = mapper;
+        _catalogService = catalogService ?? throw new ArgumentNullException(nameof(catalogService));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     [HttpGet("v1/get_product")]
