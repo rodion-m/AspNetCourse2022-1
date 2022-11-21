@@ -4,7 +4,6 @@ using Lesson04.HttpModels;
 namespace Lesson03.HttpApiClient;
 
 //Тип проекта: Class Library
-
 /// <summary>
 /// API-клиент нашего сервиса
 /// </summary>
@@ -20,6 +19,13 @@ public class ShopClient : IShopClient
         _httpClient = httpClient ?? new HttpClient();
     }
 
+    public async Task<Product> GetProduct(long id)
+    {
+        string uri = $"{_host}/products/{id}";
+        Product? product = await _httpClient.GetFromJsonAsync<Product>(uri);
+        return product!;
+    }
+
     public async Task<IReadOnlyList<Product>> GetProducts()
     {
         string uri = $"{_host}/products";
@@ -29,11 +35,12 @@ public class ShopClient : IShopClient
 
     public async Task AddProduct(Product product)
     {
-        if (product is not null)
+        if (product is null)
         {
             throw new ArgumentNullException(nameof(product));
         }
-        var uri = $"{_host}/add_product";
-        await _httpClient.PostAsJsonAsync(uri, product);
+        var uri = $"{_host}/products";
+        var response = await _httpClient.PostAsJsonAsync(uri, product);
+        response.EnsureSuccessStatusCode();
     }
 }

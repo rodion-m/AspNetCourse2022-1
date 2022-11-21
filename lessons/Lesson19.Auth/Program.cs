@@ -91,7 +91,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpLogging();
-app.UseCors(pb => pb.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+app.UseCors(policy => 
+    policy
+        //.AllowAnyOrigin()
+        .WithOrigins("http://localhost:5252", "https://mysite.ru")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+    );
 
 app.UseAuthentication();
 app.UseAuthorization();

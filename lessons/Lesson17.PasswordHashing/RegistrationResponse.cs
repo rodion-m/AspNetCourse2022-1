@@ -2,7 +2,8 @@
 
 public class RegistrationResponse : ResponseModel<User>
 {
-    public RegistrationResponse(bool succeeded, string message, User result) : base(succeeded, message, result)
+    public RegistrationResponse(bool succeeded, string message, User result) 
+        : base(succeeded, message, result)
     {
     }
 }

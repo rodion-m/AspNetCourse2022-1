@@ -21,6 +21,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.Configure<DbConfig>(builder.Configuration.GetSection("DbConfig"));
+    //dotnet ef migrations add Init -p ../MyShop.Data.Ef/
     builder.Services.AddDbContextFactory<AppDbContext>();
     builder.Services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactoryEf>();
     //builder.Services.AddScoped<IUnitOfWork>(provider => provider.GetService<IUnitOfWorkFactory>().CreateAsync());
@@ -59,14 +60,8 @@ try
 
     app.Run();
 }
-catch (Exception ex)
+catch (Exception ex) when (ex is not HostAbortedException)
 {
-    if (ex.GetType().Name is "StopTheHostException")
-    {
-        // TODO remove this hack in .NET 7: https://github.com/dotnet/runtime/issues/60600#issuecomment-1068323222
-        throw;
-    }
-
     Log.Fatal(ex, "Unhandled exception on server startup");
     throw;
 }

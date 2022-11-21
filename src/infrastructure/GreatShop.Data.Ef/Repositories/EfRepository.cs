@@ -25,7 +25,8 @@ internal abstract class EfRepository<TEntity>
     public virtual async Task<TEntity?> FindById(Guid id, CancellationToken cancellationToken = default)
     {
         return await Entities.FindAsync(new object?[] { id }, cancellationToken: cancellationToken)
-               ?? Entities.Local.FirstOrDefault(it => it.Id == id);    }
+               ?? Entities.Local.FirstOrDefault(it => it.Id == id);
+    }
 
     public virtual async ValueTask Add(TEntity entity, CancellationToken cancellationToken = default)
     {

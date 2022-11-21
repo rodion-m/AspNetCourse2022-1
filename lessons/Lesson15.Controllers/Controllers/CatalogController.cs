@@ -8,7 +8,7 @@ namespace Lesson15.Controllers.Controllers;
 public class CatalogController : ControllerBase
 {
     private readonly CatalogService _service;
-    private Category[] _categories = { new("Еда"), new("Еда") };
+    private Category[] _categories = { new("Книги"), new("Еда") };
 
     public CatalogController(CatalogService service)
     {
