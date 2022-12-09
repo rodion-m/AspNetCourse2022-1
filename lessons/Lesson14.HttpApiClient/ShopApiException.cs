@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Lesson14.HttpClient;
+namespace Lesson14.HttpApiClient;
 
 public class ShopApiException : Exception
 {

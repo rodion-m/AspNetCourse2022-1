@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Lesson14.HttpClient;
+namespace Lesson14.HttpApiClient;
 
 public class ValidationProblemDetails
 {

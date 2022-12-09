@@ -13,7 +13,7 @@ internal abstract class EfRepository<TEntity>
 
     protected EfRepository(AppDbContext dbContext)
     {
-        DbContext = dbContext;
+        DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
     public virtual async Task<TEntity> GetById(Guid id, CancellationToken cancellationToken = default)

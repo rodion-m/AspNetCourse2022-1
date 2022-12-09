@@ -16,8 +16,4 @@
         <ProjectReference Include="..\Lesson14.Models\Lesson14.Models.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Filters" />
-    </ItemGroup>
-
 </Project>

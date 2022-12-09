@@ -15,7 +15,7 @@ public class SmtpEmailSender : IEmailSender
         using var smtpClient = new SmtpClient("smtp.beget.com")
         {
             Port = 25,
-            Credentials = new NetworkCredential("asp2022@rodion-m.ru", "aHGnOlz7")
+            Credentials = new NetworkCredential("asp2022@rodion-m.ru", "----")
         };
 
         await smtpClient.SendMailAsync(from, recipients, subject, body, cancellationToken);

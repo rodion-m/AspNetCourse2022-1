@@ -2,7 +2,7 @@
 
 public interface ICatalog
 {
-    string GetProducts();
+    IReadOnlyList<Product> GetProducts();
     void AddProduct(Product product);
 }
 
@@ -13,9 +13,12 @@ public class InMemoryCatalog : ICatalog
         new Product(Guid.NewGuid(), "Чистый код", 1000)
     };
 
-    public string GetProducts()
+    /// <summary>
+    /// Метод, список товаров
+    /// </summary>
+    /// <returns></returns>
+    public IReadOnlyList<Product> GetProducts()
     {
-        
         return _products;
     }
 

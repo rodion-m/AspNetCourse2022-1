@@ -12,7 +12,7 @@ public class CartController : ControllerBase
 
     public CartController(CartService cartService)
     {
-        _cartService = cartService;
+        _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
     }
 
     public Task<Cart> GetCart()

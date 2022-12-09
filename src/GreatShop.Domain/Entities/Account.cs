@@ -8,7 +8,11 @@ public static class Role
 
 public record Account : IEntity
 {
-    protected Account() {}
+#pragma warning disable CS8618
+    protected Account()
+#pragma warning restore CS8618
+    {
+    }
     
     public Account(Guid id, string name, string email, string passwordHash, string[] roles)
     {
@@ -20,10 +24,10 @@ public record Account : IEntity
     }
 
     public Guid Id { get; init; }
-    public string Name { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public string PasswordHash { get; set; } = null!;
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string PasswordHash { get; set; }
 
     public DateTimeOffset AllTokensBlockedAt { get; set; }
-    public string[] Roles { get; set; } = null!;
+    public string[] Roles { get; set; }
 }

@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using System.Net.Mime;
 
-namespace Lesson14.HttpClient;
+namespace Lesson14.HttpApiClient;
 
 internal static class HttpClientExtensions
 {
@@ -13,7 +13,10 @@ internal static class HttpClientExtensions
         if (response.IsSuccessStatusCode)
             return await response.Content.ReadFromJsonAsync<TResponse>();
 
-        if (response.StatusCode == HttpStatusCode.Unauthorized) throw new ShopUnauthorizedAccessException();
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            throw new ShopUnauthorizedAccessException();
+        }
 
         if (response.Content.Headers.ContentType?.MediaType == MediaTypeNames.Application.Json)
         {

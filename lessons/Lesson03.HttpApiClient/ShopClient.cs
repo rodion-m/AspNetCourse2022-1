@@ -7,7 +7,7 @@ namespace Lesson03.HttpApiClient;
 /// <summary>
 /// API-клиент нашего сервиса
 /// </summary>
-public class ShopClient : IShopClient
+public sealed class ShopClient : IShopClient, IDisposable
 {
     private const string DefaultHost = "https://api.mysite.com";
     private readonly string _host;
@@ -40,7 +40,12 @@ public class ShopClient : IShopClient
             throw new ArgumentNullException(nameof(product));
         }
         var uri = $"{_host}/products";
-        var response = await _httpClient.PostAsJsonAsync(uri, product);
+        using var response = await _httpClient.PostAsJsonAsync(uri, product);
         response.EnsureSuccessStatusCode();
+    }
+
+    public void Dispose()
+    {
+        _httpClient.Dispose();
     }
 }

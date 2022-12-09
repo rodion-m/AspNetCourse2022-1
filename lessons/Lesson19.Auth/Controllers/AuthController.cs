@@ -16,7 +16,7 @@ public class AuthController : ControllerBase
 
     public AuthController(AuthService authService)
     {
-        _authService = authService;
+        _authService = authService ?? throw new ArgumentNullException(nameof(authService));
     }
 
     [HttpPost("register")]

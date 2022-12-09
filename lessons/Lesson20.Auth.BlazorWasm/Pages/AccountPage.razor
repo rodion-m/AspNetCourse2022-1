@@ -12,7 +12,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
-		account = await _shopClient.GetAccount();
+		account = await ShopClient.GetAccount();
 	}
 
 }

@@ -8,6 +8,7 @@ internal class CartRepository : EfRepository<Cart>, ICartRepository
 {
     public CartRepository(AppDbContext dbContext) : base(dbContext)
     {
+        if (dbContext == null) throw new ArgumentNullException(nameof(dbContext));
     }
 
     public async Task<Cart> GetCartByAccountId(Guid accountId, CancellationToken cancellationToken = default)

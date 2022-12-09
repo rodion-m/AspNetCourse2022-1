@@ -10,4 +10,11 @@ internal class AccountRepository : MongoGenericRepository<Account>, IAccountRepo
         : base(collection, session)
     {
     }
+
+    public Task<Account?> FindByEmail(string email, CancellationToken cancellationToken)
+    {
+        if (email == null) throw new ArgumentNullException(nameof(email));
+        return Collection.Find(Session, it => it.Email == email)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken)!;
+    }
 }

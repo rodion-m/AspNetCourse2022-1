@@ -28,8 +28,7 @@ public class AuthService
             Email = email
         };
 
-        var hashedPassword = _hasher.HashPassword(account, password);
-        account.PasswordHash = hashedPassword;
+        account.PasswordHash = _hasher.HashPassword(account, password);
 
         //await _accountRepository.Add(account);
         var token = _tokenService.GenerateToken(account);

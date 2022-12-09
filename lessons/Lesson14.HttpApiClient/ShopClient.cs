@@ -5,33 +5,29 @@ using Lesson14.Models;
 using Lesson14.Models.Requests;
 using Lesson14.Models.Responses;
 
-namespace Lesson14.HttpClient;
+namespace Lesson14.HttpApiClient;
 
 //SDK
 public class ShopClient : IDisposable
 {
     private readonly HttpMessageHandler _handler;
     private readonly string _host;
-    private readonly System.Net.Http.HttpClient _httpClient;
+    private readonly HttpClient _httpClient;
 
     public ShopClient(string host, HttpMessageHandler? handler = null)
     {
         _host = host;
         _handler = handler ?? new HttpClientHandler();
-        _httpClient = new System.Net.Http.HttpClient(_handler);
+        _httpClient = new HttpClient(_handler);
     }
 
     public bool IsAuthorizationTokenSet { get; private set; }
 
-    public void Dispose()
-    {
-        _httpClient.Dispose();
-    }
-
     public void SetAuthorizationToken(string token)
     {
-        _httpClient.DefaultRequestHeaders.Authorization
-            = new AuthenticationHeaderValue("Bearer", token);
+        if (token == null) throw new ArgumentNullException(nameof(token));
+        var header = new AuthenticationHeaderValue("Bearer", token);
+        _httpClient.DefaultRequestHeaders.Authorization = header;
         IsAuthorizationTokenSet = true;
     }
 
@@ -53,12 +49,11 @@ public class ShopClient : IDisposable
 
     public async Task<LogInResponse> LogIn(LogInRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync<LogInRequest, LogInResponse>(
+        LogInResponse? response = await _httpClient.PostAsJsonAsync<LogInRequest, LogInResponse>(
             $"{_host}/auth/login", request);
-
-
+        
         SetAuthorizationToken(response!.Token);
-
+        
         return response;
     }
 
@@ -84,8 +79,13 @@ public class ShopClient : IDisposable
     public async Task AddProduct(Product product)
     {
         var uri = $"{_host}/add_product";
-        var message = await _httpClient.PostAsJsonAsync(uri, product);
-        var stream = await message.Content.ReadAsStreamAsync();
+        using var message = await _httpClient.PostAsJsonAsync(uri, product);
+        await using var stream = await message.Content.ReadAsStreamAsync();
         var p = await JsonSerializer.DeserializeAsync<Product>(stream);
+    }
+    
+    public void Dispose()
+    {
+        _httpClient.Dispose();
     }
 }

@@ -1,15 +1,16 @@
 ﻿@page "/LogIn"
 @using Lesson14.Models.Requests
+@using Blazored.LocalStorage
 @inherits AppComponentBase
 
 @inject NavigationManager NavigationManager;
 
 <h3>Вход</h3>
 <EditForm Model="_request" OnValidSubmit="ValidSubmit">
-	<DataAnnotationsValidator></DataAnnotationsValidator>
+	<DataAnnotationsValidator />
 	Email: <InputText @bind-Value="_request.Email" class="text-black"></InputText> <br/>
 	Пароль: <InputText type="password" @bind-Value="_request.Password" class="text-black"></InputText> <br/>
-	<ValidationSummary></ValidationSummary>
+	<ValidationSummary />
 	<input type="submit" value="Войти">
 </EditForm>
 
@@ -23,8 +24,8 @@
 
 	private async Task ValidSubmit()
 	{
-		var response = await _shopClient.LogIn(_request);
-		await _localStorage.SetItemAsStringAsync("token", response.Token);
+		var response = await ShopClient.LogIn(_request);
+		await LocalStorage.SetItemAsStringAsync("token", response.Token);
 		NavigationManager.NavigateTo("Account");
 	}
 

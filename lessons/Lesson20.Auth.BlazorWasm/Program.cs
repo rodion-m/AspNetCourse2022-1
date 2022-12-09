@@ -1,5 +1,5 @@
 using Blazored.LocalStorage;
-using Lesson14.HttpClient;
+using Lesson14.HttpApiClient;
 using Lesson20.Auth.BlazorWasm;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

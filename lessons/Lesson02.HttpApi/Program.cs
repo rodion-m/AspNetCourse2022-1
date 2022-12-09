@@ -12,7 +12,7 @@ string Index(ICatalog catalog)
     if (catalog == null) 
         throw new ArgumentNullException(nameof(catalog));
 
-    return catalog.GetProducts(); //NullReferenceException (NRE/NPE)
+    return string.Join(',', catalog.GetProducts().Select((dynamic it) => it.ToString())); //NullReferenceException (NRE/NPE)
 }
 
 // int CalculateDaysBeforeNewYear()

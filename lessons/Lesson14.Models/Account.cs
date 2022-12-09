@@ -8,11 +8,21 @@ public static class Role
 
 public record Account : IEntity
 {
+    public Guid Id { get; init; }
     public string Name { get; set; }
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     public DateTimeOffset AllTokensBlockedAt { get; set; }
     public string[] Roles { get; set; }
+    public DateOnly Birthday { get; set; }
+
+    public Account()
+    {
+        if (Birthday < new DateOnly())
+        {
+            
+        }
+    }
 
     public static Account Fake => new()
     {
@@ -20,6 +30,4 @@ public record Account : IEntity
         Email = "fake@fake.com",
         Name = "Fakenshtain Smith"
     };
-
-    public Guid Id { get; init; }
 }

@@ -9,7 +9,7 @@ public class EFExamples
     {
         using var db = new AppDbContext(new DbContextOptions<AppDbContext>());
         Console.WriteLine("Inserting a new blog");
-        db.Add(new Order { Phone = "+799912345678" });
+        db.Add(new Order(Guid.NewGuid(), "+799912345678", 100m, OrderStatus.Created));
         await db.SaveChangesAsync();
 
         // Read

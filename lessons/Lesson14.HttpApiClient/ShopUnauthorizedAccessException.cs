@@ -1,4 +1,4 @@
-﻿namespace Lesson14.HttpClient;
+﻿namespace Lesson14.HttpApiClient;
 
 public class ShopUnauthorizedAccessException : Exception
 {

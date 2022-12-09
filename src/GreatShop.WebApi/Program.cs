@@ -7,6 +7,7 @@ using GreatShop.Infrastructure;
 using GreatShop.WebApi;
 using GreatShop.WebApi.Extensions;
 using GreatShop.WebApi.Mappers;
+using GreatShop.WebApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -28,6 +29,7 @@ try
     //builder.Services.AddRepository<IProductRepository>(uow => uow.ProductRepository);
     
     builder.Services.AddSingleton<IClock, UtcClock>();
+    builder.Services.AddSingleton<IPasswordHasherService, Pbkdf2PasswordHasher>();
     builder.Services.AddSingleton<HttpModelsMapper>();
 
     builder.Services.AddScoped<CatalogService>();

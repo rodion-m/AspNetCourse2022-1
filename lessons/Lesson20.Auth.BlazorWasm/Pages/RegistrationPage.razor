@@ -19,8 +19,8 @@
 
 	private async Task ValidSubmit()
 	{
-		var response = await _shopClient.Register(_request);
-		await _localStorage.SetItemAsync("token", response.Token);
+		var response = await ShopClient.Register(_request);
+		await LocalStorage.SetItemAsync("token", response.Token);
 		NavigationManager.NavigateTo("Account");
 	}
 

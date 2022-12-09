@@ -12,7 +12,7 @@ public class CatalogController : ControllerBase
 
     public CatalogController(CatalogService service)
     {
-        _service = service;
+        _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
     [HttpPost("find_category")]
@@ -31,15 +31,20 @@ public class CatalogController : ControllerBase
         //return cats;
     }
 
-    public Category? FindCategory(string text)
+    public IActionResult FindCategory(string text) //T
     {
-        var cat = _service.FindCategory(text);
-        return cat;
+        Category? cat = _service.FindCategory(text);
+        if(cat is not null)
+            return Ok(cat);
+
+        var product = new Product();
+        return Ok(product);
+        return NotFound();
     }
 
     public ActionResult<Category> FindCategory1(string text)
     {
-        var cat = _service.FindCategory(text);
+        Category? cat = _service.FindCategory(text);
         if (cat == null) return NotFound();
         return cat;
     }
@@ -60,6 +65,11 @@ public class CatalogController : ControllerBase
     public void AddCategory(Category category)
     {
     }
+}
+
+public class Product
+
+{
 }
 
 public class CategoryFilterModel

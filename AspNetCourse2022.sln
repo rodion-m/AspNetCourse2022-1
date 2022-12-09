@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson14.BlazorClient", "le
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson14.Models", "lessons\Lesson14.Models\Lesson14.Models.csproj", "{A3049396-EF54-4377-8EB9-2B87369428D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson14.HttpClient", "lessons\Lesson14.HttpClient\Lesson14.HttpClient.csproj", "{FBF45DAB-CFFE-458A-9770-A398445D40A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson14.HttpApiClient", "lessons\Lesson14.HttpApiClient\Lesson14.HttpApiClient.csproj", "{FBF45DAB-CFFE-458A-9770-A398445D40A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson15.Controllers", "lessons\Lesson15.Controllers\Lesson15.Controllers.csproj", "{08822F51-3FEE-4E86-A594-B8824487B476}"
 EndProject
