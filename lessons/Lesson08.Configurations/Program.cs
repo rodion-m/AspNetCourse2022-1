@@ -7,8 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 //     new SmtpEmailSender("smtp.beget.com", "asp2022@rodion-m.ru", "aHGnOlz7")
 // );
 
-builder.Services.Configure<SmtpCredentials>(
-    builder.Configuration.GetSection("SmtpCredentials"));
+//builder.Services.Configure<SmtpCredentials>(
+//    builder.Configuration.GetSection("SmtpCredentials"));
+
+builder.Services.AddOptions<SmtpConfig>()
+    .BindConfiguration("SmtpConfig")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
 builder.Services.AddScoped<MyService>();
 

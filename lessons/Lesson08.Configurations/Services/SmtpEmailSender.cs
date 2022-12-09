@@ -6,11 +6,11 @@ namespace Lesson08.Configurations.Services;
 
 public class SmtpEmailSender : IEmailSender
 {
-    private readonly SmtpCredentials _credentials;
+    private readonly SmtpConfig _config;
 
-    public SmtpEmailSender(IOptions<SmtpCredentials> options)
+    public SmtpEmailSender(IOptions<SmtpConfig> options)
     {
-        _credentials = options.Value;
+        _config = options.Value;
     }
 
     public async Task SendAsync(
@@ -20,10 +20,10 @@ public class SmtpEmailSender : IEmailSender
         string? body,
         CancellationToken cancellationToken = default)
     {
-        using var smtpClient = new SmtpClient(_credentials.Host)
+        using var smtpClient = new SmtpClient(_config.Host)
         {
             Port = 25,
-            Credentials = new NetworkCredential(_credentials.UserName, _credentials.Password)
+            Credentials = new NetworkCredential(_config.UserName, _config.Password)
         };
 
         await smtpClient.SendMailAsync(from, recipients, subject, body, cancellationToken);

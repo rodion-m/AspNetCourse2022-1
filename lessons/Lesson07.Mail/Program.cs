@@ -11,7 +11,10 @@ builder.Services.AddHostedService<MailingBackgroundService>();
 builder.Services.AddHostedService<ExampleBackgroundService>();
 
 builder.Services.Configure<HostOptions>(
-    opts => { opts.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore; });
+    opts =>
+    {
+        opts.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+    });
 
 
 builder.Services.Configure<HostOptions>(

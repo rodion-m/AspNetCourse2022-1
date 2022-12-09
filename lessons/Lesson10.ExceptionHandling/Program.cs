@@ -1,3 +1,4 @@
+using Lesson08.Configurations;
 using Lesson10.ExceptionHandling;
 using Lesson08.Configurations.Services;
 using Serilog;
@@ -16,7 +17,7 @@ try
      */
     
     var builder = WebApplication.CreateBuilder(args);
-    builder.Services.Configure<SmtpCredentials>(
+    builder.Services.Configure<SmtpConfig>(
         builder.Configuration.GetSection("SmtpCredentials"));
     builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
     builder.Services.AddHostedService<MailingBackgroundService>();
