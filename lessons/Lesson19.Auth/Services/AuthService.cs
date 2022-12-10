@@ -38,11 +38,14 @@ public class AuthService
     public async Task<(Account acc, string token)> LogIn(string email, string password)
     {
         var account = await _accountRepo.FindByEmail(email);
-        if (account == null) throw new EmailNotFoundException(email);
+        if (account is null) throw new EmailNotFoundException(email);
 
-        if (_hasher.VerifyHashedPassword(account, account.PasswordHash, password)
-            == PasswordVerificationResult.Failed)
+        var result = _hasher.VerifyHashedPassword(
+            account, account.PasswordHash, password);
+        if (result == PasswordVerificationResult.Failed)
+        {
             throw new IncorrectPasswordException();
+        }
 
         return (account, _tokenService.GenerateToken(account));
     }

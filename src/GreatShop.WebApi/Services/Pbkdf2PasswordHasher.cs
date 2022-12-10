@@ -1,16 +1,18 @@
 using GreatShop.Domain.Entities;
 using GreatShop.Domain.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+
 namespace GreatShop.WebApi.Services;
 
 public class Pbkdf2PasswordHasher : IPasswordHasherService
 {
-    private readonly IPasswordHasher<Account> _passwordHasher;
+    private readonly PasswordHasher<Account> _passwordHasher;
     private readonly Account _dummy = new(Guid.Empty, "", "fake@fake.com", "", Array.Empty<string>());
 
-    public Pbkdf2PasswordHasher(IPasswordHasher<Account> passwordHasher)
+    public Pbkdf2PasswordHasher(IOptions<PasswordHasherOptions> optionsAccessor)
     {
-        _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
+        _passwordHasher = new PasswordHasher<Account>(optionsAccessor);
     }
     
     public string HashPassword(string password)
