@@ -20,7 +20,7 @@ public class AccountService
         _accountRepo = accountRepo ?? throw new ArgumentNullException(nameof(accountRepo));
     }
 
-    public virtual async Task<(Account acc, string token)> Register(
+    public virtual async Task<(Account account, string token)> Register(
         string email, string name, string password)
     {
         if (email == null) throw new ArgumentNullException(nameof(email));
@@ -41,8 +41,12 @@ public class AccountService
         return (account, token);
     }
 
-    public virtual async Task<(Account acc, string token)> LogIn(string email, string password)
+    public virtual async Task<(Account account, string token)> LogIn(
+        string email, string password)
     {
+        if (email == null) throw new ArgumentNullException(nameof(email));
+        if (password == null) throw new ArgumentNullException(nameof(password));
+        
         var account = await _accountRepo.FindByEmail(email);
         if (account is null)
         {

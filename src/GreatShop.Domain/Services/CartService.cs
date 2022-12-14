@@ -13,22 +13,22 @@ namespace GreatShop.Domain.Services
             ICartRepository cartRepository, 
             ILogger<CartService> logger)
         {
-            _cartRepository = cartRepository;
-            _logger = logger;
+            _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task AddProduct(Guid accountId, Product product, double quantity = 1d)
+        public virtual async Task AddProduct(Guid accountId, Product product, double quantity = 1d)
         {
+            if (product == null) throw new ArgumentNullException(nameof(product));
             var cart = await _cartRepository.GetCartByAccountId(accountId);
             cart.Add(product, quantity);
             await _cartRepository.Update(cart);
         }
 
-        public Task<Cart> GetAccountCart(Guid accountId)
+        public virtual Task<Cart> GetAccountCart(Guid accountId)
         {
             _logger.LogDebug("Get cart for account: {AccountId}", accountId);
             return _cartRepository.GetCartByAccountId(accountId);
         }
-
     }
 }
