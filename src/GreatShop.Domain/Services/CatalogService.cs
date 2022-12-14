@@ -3,18 +3,18 @@ using GreatShop.Domain.Repositories;
 
 namespace GreatShop.Domain.Services;
 
-public class CatalogService
+public class CatalogService //Port (hexagonal architecture)
 {
     private readonly IUnitOfWorkFactory _uowFactory;
     private readonly IClock _clock;
 
     public CatalogService(IUnitOfWorkFactory uowFactory, IClock clock)
     {
-        _uowFactory = uowFactory;
-        _clock = clock;
+        _uowFactory = uowFactory ?? throw new ArgumentNullException(nameof(uowFactory));
+        _clock = clock ?? throw new ArgumentNullException(nameof(clock));
     }
 
-    public async Task<IReadOnlyList<Product>> GetProducts(Guid categoryId)
+    public virtual async Task<IReadOnlyList<Product>> GetProducts(Guid categoryId)
     {
         await using var uow = await _uowFactory.CreateAsync();
         var products = await uow.ProductRepository.GetProducts(categoryId);
@@ -26,13 +26,13 @@ public class CatalogService
         return products;
     }
 
-    public async Task<Product> GetProduct(Guid productId)
+    public virtual async Task<Product> GetProduct(Guid productId)
     {
         await using var uow = await _uowFactory.CreateAsync();
         return await uow.ProductRepository.GetById(productId);
     }
 
-    public async Task<IReadOnlyList<Product>> GetAllProducts()
+    public virtual async Task<IReadOnlyList<Product>> GetAllProducts()
     {
         await using var uow = await _uowFactory.CreateAsync();
         return await uow.ProductRepository.GetAllProducts();

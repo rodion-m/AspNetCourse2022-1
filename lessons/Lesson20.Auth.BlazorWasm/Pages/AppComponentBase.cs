@@ -21,7 +21,10 @@ public abstract class AppComponentBase : ComponentBase
         {
             IsTokenChecked = true;
             var token = await LocalStorage.GetItemAsync<string>("token");
-            if (!string.IsNullOrEmpty(token)) ShopClient.SetAuthorizationToken(token);
+            if (!string.IsNullOrEmpty(token))
+            {
+                ShopClient.SetAuthorizationToken(token);
+            }
         }
     }
 }

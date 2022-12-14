@@ -1,4 +1,4 @@
-namespace GreatShop.Domain;
+namespace GreatShop.Domain.Services;
 
 public interface IClock
 {

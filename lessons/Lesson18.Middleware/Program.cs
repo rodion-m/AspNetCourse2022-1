@@ -24,6 +24,16 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseAuthorization();
+app.Map("/version", async context =>
+{
+    //Доблавяет эндпоинт
+    await context.Response.WriteAsync("1");
+});
+
+app.Use((context, func) =>
+{
+    return func();
+});
 
 app.UseExceptionHandler(exceptionHandlerApp =>
 {

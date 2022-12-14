@@ -21,18 +21,15 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.Configure<DbConfig>(builder.Configuration.GetSection("DbConfig"));
+    builder.Services.AddOptions<DbConfig>()
+        .BindConfiguration("DbConfig")
+        .ValidateDataAnnotations()
+        .ValidateOnStart();
+
     //dotnet ef migrations add Init -p ../MyShop.Data.Ef/
     builder.Services.AddDbContextFactory<AppDbContext>();
-    builder.Services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactoryEf>();
-    //builder.Services.AddScoped<IUnitOfWork>(provider => provider.GetService<IUnitOfWorkFactory>().CreateAsync());
-    //builder.Services.AddRepository<IProductRepository>(uow => uow.ProductRepository);
     
-    builder.Services.AddSingleton<IClock, UtcClock>();
-    builder.Services.AddSingleton<IPasswordHasherService, Pbkdf2PasswordHasher>();
-    builder.Services.AddSingleton<HttpModelsMapper>();
-
-    builder.Services.AddScoped<CatalogService>();
+    builder.Services.AddDomainDependencies();
 
     builder.Host.UseSerilog((context, configuration) =>
     {

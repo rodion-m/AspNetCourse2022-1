@@ -9,7 +9,7 @@ namespace GreatShop.WebApi.Controllers;
 
 [ApiController]
 [Route("catalog")]
-public class CatalogController : ControllerBase
+public class CatalogController : ControllerBase //Adapter
 {
     private readonly CatalogService _catalogService;
     private readonly HttpModelsMapper _mapper;

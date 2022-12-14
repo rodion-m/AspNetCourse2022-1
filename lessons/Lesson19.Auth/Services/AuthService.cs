@@ -10,14 +10,18 @@ public class AuthService
     private readonly IPasswordHasher<Account> _hasher;
     private readonly ITokenService _tokenService;
 
-    public AuthService(IPasswordHasher<Account> hasher, ITokenService tokenService, AccountRepository accountRepo)
+    public AuthService(
+        IPasswordHasher<Account> hasher,
+        ITokenService tokenService,
+        AccountRepository accountRepo)
     {
-        _hasher = hasher;
-        _tokenService = tokenService;
-        _accountRepo = accountRepo;
+        _hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
+        _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+        _accountRepo = accountRepo ?? throw new ArgumentNullException(nameof(accountRepo));
     }
 
-    public async Task<(Account acc, string token)> Register(string email, string name, string password)
+    public async Task<(Account acc, string token)> Register(
+        string email, string name, string password)
     {
         //проверка уникальности email...
 

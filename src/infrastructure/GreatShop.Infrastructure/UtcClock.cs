@@ -1,4 +1,5 @@
 ﻿using GreatShop.Domain;
+using GreatShop.Domain.Services;
 
 namespace GreatShop.Infrastructure;
 
