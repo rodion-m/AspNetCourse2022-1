@@ -26,7 +26,7 @@ internal class UnitOfWorkMongoDb : IUnitOfWork
         get { return _productRepository ??= new ProductRepository(_collections.Products, _session); }
     }
 
-    public bool IsCommited => !_session.IsInTransaction;
+    public bool IsCommitted => !_session.IsInTransaction;
 
     private readonly CollectionsSet _collections;
     private readonly IClientSessionHandle _session;

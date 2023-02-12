@@ -27,6 +27,9 @@ public record Cart : IEntity
     
     public void Add(Product product, double quantity = 1d)
     {
+        if (product == null) throw new ArgumentNullException(nameof(product));
+        if(quantity <= 0) throw new ArgumentOutOfRangeException(nameof(quantity));
+        
         var cartItem = Items.SingleOrDefault(it => it.ProductId == product.Id);
         if (cartItem is not null)
         {

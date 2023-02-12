@@ -5,7 +5,7 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     IAccountRepository AccountRepository { get; }
     ICartRepository CartRepository { get; }
     IProductRepository ProductRepository { get; }
-    bool IsCommited { get; }
+    bool IsCommitted { get; }
     
     ValueTask CommitAsync(CancellationToken cancellationToken = default);
 }

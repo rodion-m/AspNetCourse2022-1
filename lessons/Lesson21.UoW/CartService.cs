@@ -18,19 +18,32 @@ public class CartService
         return cart;
     }
 
-    public async Task AddItem(Guid accountId, Guid productId, double quantity = 1d)
+    public async Task AddItem(Guid accountId, Product product, double quantity = 1d)
     {
+        if (product == null) throw new ArgumentNullException(nameof(product));
+        if(quantity <= 0) throw new ArgumentOutOfRangeException(nameof(quantity));
         var cart = await _uow.CartRepository.GetByAccountId(accountId);
-        await AddItem(cart, productId, quantity);
+        await AddItem(cart, product, quantity);
     }
 
-    public async Task AddItem(Cart cart, Guid productId, double quantity = 1d)
+    public async Task AddItem(Cart cart, Product product, double quantity = 1d)
     {
-        var existedItem = cart.Items.SingleOrDefault(it => it.ProductId == productId);
+        if (cart == null) throw new ArgumentNullException(nameof(cart));
+        if (product == null) throw new ArgumentNullException(nameof(product));
+        if(quantity <= 0) throw new ArgumentOutOfRangeException(nameof(quantity));
+        
+        var existedItem = cart.Items.SingleOrDefault(it => it.ProductId == product.Id);
         if (existedItem is not null)
+        {
             existedItem.Quantity += quantity;
+        }
         else
-            cart.Items.Add(existedItem);
+        {
+            cart.Items.Add(new CartItem()
+            {
+                ProductId = product.Id, Quantity = quantity, Price = product.Price
+            });
+        }
 
         await _uow.CartRepository.Update(cart);
         await _uow.SaveChangesAsync();

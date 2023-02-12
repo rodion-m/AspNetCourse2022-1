@@ -1,14 +1,6 @@
 using GreatShop.Configurations;
 using GreatShop.Data.Ef;
-using GreatShop.Domain;
-using GreatShop.Domain.Repositories;
-using GreatShop.Domain.Services;
-using GreatShop.Infrastructure;
-using GreatShop.WebApi;
 using GreatShop.WebApi.Extensions;
-using GreatShop.WebApi.Mappers;
-using GreatShop.WebApi.Services;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()

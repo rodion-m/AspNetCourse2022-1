@@ -1,5 +1,6 @@
 ﻿using GreatShop.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GreatShop.Data.Ef.Configuration;
@@ -15,7 +16,7 @@ class CartEntityTypeConfiguration : IEntityTypeConfiguration<Cart>
 
         conf.Property<string>("Description").IsRequired(false);
 
-        var navigation = conf.Metadata.FindNavigation(nameof(Cart.Items));
+        IMutableNavigation? navigation = conf.Metadata.FindNavigation(nameof(Cart.Items));
         // DDD Patterns comment:
         //Set as field (New since EF 1.1) to access the OrderItem collection property through its field
         navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
