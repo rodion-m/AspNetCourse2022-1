@@ -11,12 +11,13 @@ public class UnauthorizedResponseModelMiddleware
         RequestDelegate next,
         ResponseDefaultFormatterService formatterService)
     {
-        _next = next;
-        _formatterService = formatterService;
+        _next = next ?? throw new ArgumentNullException(nameof(next));
+        _formatterService = formatterService ?? throw new ArgumentNullException(nameof(formatterService));
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
+        if (context == null) throw new ArgumentNullException(nameof(context));
         await _next(context);
 
         if(context.Response.HasStarted) return;

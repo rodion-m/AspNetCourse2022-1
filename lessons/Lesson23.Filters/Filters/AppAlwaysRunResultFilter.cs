@@ -8,7 +8,9 @@ class AppAlwaysRunResultFilter : IAlwaysRunResultFilter
     private readonly ILogger<AppAlwaysRunResultFilter> _logger;
     private readonly IAccountRepository _accountRepository;
 
-    public AppAlwaysRunResultFilter(ILogger<AppAlwaysRunResultFilter> logger, IAccountRepository accountRepository)
+    public AppAlwaysRunResultFilter(
+        ILogger<AppAlwaysRunResultFilter> logger, 
+        IAccountRepository accountRepository)
     {
         _logger = logger;
         _accountRepository = accountRepository;

@@ -21,12 +21,16 @@ public class AccountService
     }
 
     public virtual async Task<(Account account, string token)> Register(
-        string email, string name, string password)
+        string email, string name, string password, CancellationToken cancellationToken)
     {
         if (email == null) throw new ArgumentNullException(nameof(email));
         if (name == null) throw new ArgumentNullException(nameof(name));
         if (password == null) throw new ArgumentNullException(nameof(password));
-        //проверка уникальности email...
+        
+        if(await _accountRepo.IsAccountExist(email, cancellationToken))
+        {
+            throw new AccountEmailAlreadyExistsException(email);
+        }
 
         Account account = new(
             id: Guid.NewGuid(), 
@@ -35,29 +39,34 @@ public class AccountService
             email: email,
             roles: Roles.Defaults.Customers
         );
-
-        await _accountRepo.Add(account);
+        await _accountRepo.Add(account, cancellationToken);
         var token = _tokenService.GenerateToken(account);
         return (account, token);
     }
 
     public virtual async Task<(Account account, string token)> LogIn(
-        string email, string password)
+        string email, string password, CancellationToken cancellationToken)
     {
         if (email == null) throw new ArgumentNullException(nameof(email));
         if (password == null) throw new ArgumentNullException(nameof(password));
         
-        var account = await _accountRepo.FindByEmail(email);
+        var account = await _accountRepo.FindByEmail(email, cancellationToken);
         if (account is null)
         {
             throw new EmailNotFoundException(email);
         }
+        ThrowIfPasswordDoesntMatch(password, account.PasswordHash);
 
-        if (!_hasher.VerifyPassword(account.PasswordHash, password))
+        return (account, _tokenService.GenerateToken(account));
+    }
+
+    private void ThrowIfPasswordDoesntMatch(string passwordHash, string providedPassword)
+    {
+        if (providedPassword == null) throw new ArgumentNullException(nameof(providedPassword));
+        if (passwordHash == null) throw new ArgumentNullException(nameof(passwordHash));
+        if (!_hasher.VerifyPassword(passwordHash, providedPassword))
         {
             throw new IncorrectPasswordException();
         }
-
-        return (account, _tokenService.GenerateToken(account));
     }
 }

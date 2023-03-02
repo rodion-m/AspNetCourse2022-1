@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Lesson23.Filters.Filters;
 
@@ -9,25 +8,7 @@ public class AppExceptionFilter2 : Attribute, IExceptionFilter, IOrderedFilter
 
     public void OnException(ExceptionContext context)
     {
-        var message = TryGetUserMessageFromException(context);
-        if (message != null)
-        {
-            context.Result = new ObjectResult(new ErrorModel(message));
-            context.ExceptionHandled = true;
-        }
     }
-
-    private string? TryGetUserMessageFromException(ExceptionContext context)
-    {
-        return context.Exception switch
-        {
-            EmailNotFoundException => "Аккаунт с таким Email не найден",
-            IncorrectPasswordException => "Неверный пароль",
-            _ => null
-        };
-    }
-
-    
 }
 
 public class IncorrectPasswordException : Exception

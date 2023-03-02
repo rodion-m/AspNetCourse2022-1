@@ -61,10 +61,12 @@ public class AuthController : ControllerBase
         return Task.FromResult(Account.Fake with { Id = guid });
     }
 
-    [Authorize(Roles = $"{Role.Admin},{Role.Buyer}")]
-    [HttpGet("admin")]
+    //[Authorize(Roles = $"{Role.Admin},{Role.Buyer}")]
+    [Authorize(Roles = $"{Role.Admin}")]
+    [HttpGet("get_all")]
     public IActionResult GetAllAccounts()
     {
+        //TODO: return all accounts
         return Ok();
     }
 }

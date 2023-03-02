@@ -61,3 +61,5 @@ finally
     Log.Information("Shut down complete");
     Log.CloseAndFlush(); // Перед выходом дожидаемся пока все логи будут записаны (сохранены)
 }
+
+public partial class Program { }

@@ -3,7 +3,6 @@ using Lesson23.Filters.Filters;
 using Lesson23.Filters.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options =>
 {
-    options.Filters.Add<AppExceptionFilter1>(order: 0);
+    options.Filters.Add<CentralizedExceptionHandlingFilter>(order: 0);
     options.Filters.Add<AppExceptionFilter2>(order: 1);
     options.Filters.Add<LogResourceFilter>();
     options.Filters.Add<ParametersLoggingActionFilter>();
@@ -52,7 +51,7 @@ app.UseMiddleware<UnauthorizedResponseModelMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", [AppExceptionFilter1] (_) => throw new Exception("Hello Exception"));
+app.MapGet("/", [CentralizedExceptionHandlingFilter] (_) => throw new Exception("Hello Exception"));
 
 app.MapControllers();
 

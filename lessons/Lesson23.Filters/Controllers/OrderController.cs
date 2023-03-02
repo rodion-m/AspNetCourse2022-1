@@ -24,7 +24,7 @@ public class OrderController : ControllerBase
         return Ok();
     }
 
-    [AppExceptionFilter1(Order = (int) FilterOrder.AppAuthFilter1)]
+    [CentralizedExceptionHandlingFilter(Order = (int) FilterOrder.AppAuthFilter1)]
     //[AppExceptionFilter1(Order = (int) Orders.Asd)]
     [HttpPost("offer")]
     public IActionResult Offer(Order order)
@@ -32,7 +32,7 @@ public class OrderController : ControllerBase
         return Ok();
     }
 
-    [AppExceptionFilter1(Order = 1)]
+    [CentralizedExceptionHandlingFilter(Order = 1)]
     [HttpGet("offer2", Name = "OfferGet")]
     public IActionResult Offer2(string username, int amount, bool callManager)
     {

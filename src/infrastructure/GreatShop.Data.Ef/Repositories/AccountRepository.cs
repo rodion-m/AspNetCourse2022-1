@@ -16,4 +16,10 @@ internal class AccountRepository : EfRepository<Account>, IAccountRepository
         if (email == null) throw new ArgumentNullException(nameof(email));
         return Entities.FirstOrDefaultAsync(it => it.Email == email, cancellationToken: cancellationToken);
     }
+
+    public Task<bool> IsAccountExist(string email, CancellationToken cancellationToken)
+    {
+        if (email == null) throw new ArgumentNullException(nameof(email));
+        return Entities.AnyAsync(it => it.Email == email, cancellationToken: cancellationToken);
+    }
 }

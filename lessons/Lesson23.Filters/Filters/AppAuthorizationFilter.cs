@@ -10,7 +10,7 @@ public class AppAuthorizationFilter : IAuthorizationFilter
         //_logger.LogInformation(context.Result.ToString());
         //if (context.Result is UnauthorizedResult)
         //{
-        context.Result = new UnauthorizedObjectResult(new ErrorModel("Not authorized"));
+        //context.Result = new UnauthorizedObjectResult(new ErrorResponse("Not authorized"));
         //}
     }
 }
