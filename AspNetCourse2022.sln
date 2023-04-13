@@ -70,7 +70,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatShop.HttpApiClient", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatShop.WebApi", "src\GreatShop.WebApi\GreatShop.WebApi.csproj", "{215A797D-F94E-4B99-A211-9F2C2DA48F39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatShop.WebApi.Test", "tests\GreatShop.WebApi.Test\GreatShop.WebApi.Test.csproj", "{BC8980E3-3B90-4CAD-9C11-265D07128779}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatShop.WebApi.IntegrationTest", "tests\GreatShop.WebApi.IntegrationTest\GreatShop.WebApi.IntegrationTest.csproj", "{BC8980E3-3B90-4CAD-9C11-265D07128779}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HugeLazyResponseExampleProject", "lessons\HugeLazyResponseExampleProject\HugeLazyResponseExampleProject.csproj", "{809E999E-7E10-4172-9551-579D9FEE6C18}"
 EndProject
@@ -91,8 +91,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson03.ThreadSafeCatalogWebApi", "lessons\Lesson03.ThreadSafeCatalogWebApi\Lesson03.ThreadSafeCatalogWebApi.csproj", "{4EAF9794-0AA7-4BDD-981C-2A0353A63647}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceProviderChecks", "lessons\ServiceProviderChecks\ServiceProviderChecks.csproj", "{98793513-960F-4362-96A9-D76B67E5BF24}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatShop.ReactWeb", "src\GreatShop.ReactWeb\GreatShop.ReactWeb.csproj", "{F6453690-4E73-4076-91F8-7C125708A010}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -264,10 +262,6 @@ Global
 		{98793513-960F-4362-96A9-D76B67E5BF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98793513-960F-4362-96A9-D76B67E5BF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98793513-960F-4362-96A9-D76B67E5BF24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6453690-4E73-4076-91F8-7C125708A010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6453690-4E73-4076-91F8-7C125708A010}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6453690-4E73-4076-91F8-7C125708A010}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6453690-4E73-4076-91F8-7C125708A010}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8CFCD1FD-A740-479A-BDC3-D146B83BC0C5} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
@@ -312,6 +306,5 @@ Global
 		{D2037F43-8BBC-4109-8A98-917E8AE3F457} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
 		{4EAF9794-0AA7-4BDD-981C-2A0353A63647} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
 		{98793513-960F-4362-96A9-D76B67E5BF24} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
-		{F6453690-4E73-4076-91F8-7C125708A010} = {BF334292-3400-4BCC-8258-25AA8E1551CB}
 	EndGlobalSection
 EndGlobal

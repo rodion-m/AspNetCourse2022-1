@@ -4,7 +4,7 @@ using GreatShop.WebApi.Middlewares;
 using Microsoft.AspNetCore.Http;
 using Xunit;
 
-namespace GreatShop.WebApi.Test.UnitTests;
+namespace GreatShop.WebApi.IntegrationTest.UnitTests;
 
 public class MiddlewareTests
 {

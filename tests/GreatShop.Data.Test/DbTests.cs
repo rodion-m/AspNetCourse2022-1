@@ -22,7 +22,7 @@ public abstract partial class DbTests : IDisposable
     [Fact]
     public async Task Adding_item_to_a_cart_works()
     {
-        var unitOfWork = await _unitOfWorkFactory.CreateAsync();
+        await using var unitOfWork = await _unitOfWorkFactory.CreateAsync();
         var cartRepository = unitOfWork.CartRepository;
         var cartId = Guid.NewGuid();
         await cartRepository.Add(new Cart(cartId, Guid.NewGuid(), new List<CartItem>()

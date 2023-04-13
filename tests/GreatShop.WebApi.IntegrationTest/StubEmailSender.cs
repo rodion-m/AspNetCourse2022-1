@@ -1,6 +1,6 @@
 ﻿using GreatShop.Domain.Services;
 
-namespace GreatShop.WebApi.Test;
+namespace GreatShop.WebApi.IntegrationTest;
 
 public class StubEmailSender : IEmailSender
 {

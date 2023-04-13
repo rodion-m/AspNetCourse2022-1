@@ -56,7 +56,12 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        BuildCartItems(modelBuilder);
+        BuildCartItemsModel(modelBuilder);
+        BuildAccountModel(modelBuilder);
+    }
+
+    private static void BuildAccountModel(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Account>()
             .Property(e => e.Roles)
             .HasConversion(
@@ -64,8 +69,8 @@ public class AppDbContext : DbContext
                 v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
             );
     }
-    
-    private void BuildCartItems(ModelBuilder modelBuilder)
+
+    private void BuildCartItemsModel(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<CartItem>(action =>
         {

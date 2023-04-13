@@ -1,6 +1,6 @@
 namespace Lesson21.UoW.Data;
 
-public class UnitOfWorkEf : IUnitOfWork, IAsyncDisposable
+public class UnitOfWorkEf : IUnitOfWork
 {
     private readonly AppDbContext _dbContext;
 

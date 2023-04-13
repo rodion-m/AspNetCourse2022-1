@@ -23,11 +23,7 @@ public class JwtTokenService : ITokenService
         if (account == null) throw new ArgumentNullException(nameof(account));
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new Claim(ClaimTypes.Role, string.Join(",", account.Roles))
-            }),
+            Subject = CreateClaimsIdentity(account),
             Expires = _clock.GetCurrentTime().Add(_jwtConfig.LifeTime).DateTime,
             Audience = _jwtConfig.Audience,
             Issuer = _jwtConfig.Issuer,
@@ -36,8 +32,22 @@ public class JwtTokenService : ITokenService
                 SecurityAlgorithms.HmacSha256Signature
             )
         };
-        var tokenHandler = new JwtSecurityTokenHandler(); // {MapInboundClaims = false};
+        var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+    private ClaimsIdentity CreateClaimsIdentity(Account account)
+    {
+        var claimsIdentity = new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, account.Id.ToString())
+        });
+        foreach (var role in account.Roles)
+        {
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+        }
+
+        return claimsIdentity;
     }
 }
