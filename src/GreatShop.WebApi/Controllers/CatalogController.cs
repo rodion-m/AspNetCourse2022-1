@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using GreatShop.Domain;
 using GreatShop.Domain.Services;
 using GreatShop.HttpModels.Responses.Catalog.V1;
 using GreatShop.HttpModels.Responses.Common;
 using GreatShop.WebApi.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreatShop.WebApi.Controllers;
@@ -42,4 +44,14 @@ public class CatalogController : ControllerBase //Adapter
         var products = await _catalogService.GetAllProducts();
         return new GetProductsResponseV1(products.Select(_mapper.MapProductModelV1));
     }
+    
+    [Authorize(Roles = nameof(Role.Admin))]
+    [HttpGet("v1/add_product")]
+    public async Task<ActionResult<Guid>> AddProductV1(ProductModelV1 request)
+    {
+        var product = await _catalogService.AddProduct(
+            request.Name, request.CategoryId, request.Price, request.ImageUri);
+        return product.Id;
+    }
+
 }

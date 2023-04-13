@@ -38,4 +38,6 @@ internal abstract class MongoGenericRepository<TEntity>
         await Collection.ReplaceOneAsync(
             Session, it => it.Id == entity.Id, entity, cancellationToken: cancellationToken);
     }
+
+    public Guid NewGuid() => Guid.NewGuid();
 }

@@ -37,4 +37,16 @@ public class CatalogService //Port (hexagonal architecture)
         await using var uow = await _uowFactory.CreateAsync();
         return await uow.ProductRepository.GetAllProducts();
     }
+
+    public async Task<Product> AddProduct(string name, Guid categoryId, decimal price, string imageUri)
+    {
+        if (price <= 0) throw new ArgumentOutOfRangeException(nameof(price));
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(imageUri);
+        await using var uow = await _uowFactory.CreateAsync();
+        var product = new Product(uow.ProductRepository.NewGuid(), categoryId, name, price, imageUri);
+        await uow.ProductRepository.Add(product);
+        await uow.CommitAsync();
+        return product;
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using GreatShop.Configurations;
+using GreatShop.Domain;
 using GreatShop.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -67,6 +68,7 @@ public class AppDbContext : DbContext
             .HasConversion(
                 v => string.Join(',', v),
                 v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                                    .Select(Enum.Parse<Role>).ToArray()
             );
     }
 

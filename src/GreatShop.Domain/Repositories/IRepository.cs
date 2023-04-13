@@ -9,4 +9,6 @@ public interface IRepository<TEntity>
     Task<TEntity?> FindById(Guid id, CancellationToken cancellationToken = default);
     ValueTask Add(TEntity entity, CancellationToken cancellationToken = default);
     ValueTask Update(TEntity entity, CancellationToken cancellationToken = default);
+    
+    Guid NewGuid();
 }

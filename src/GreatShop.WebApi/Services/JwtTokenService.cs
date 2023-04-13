@@ -45,7 +45,7 @@ public class JwtTokenService : ITokenService
         });
         foreach (var role in account.Roles)
         {
-            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
         }
 
         return claimsIdentity;

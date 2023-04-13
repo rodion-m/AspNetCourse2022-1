@@ -37,7 +37,7 @@ public class AccountService
             name: name,
             passwordHash: _hasher.HashPassword(password),
             email: email,
-            roles: Roles.Defaults.Customers
+            roles: new []{ Role.Customer }
         );
         await _accountRepo.Add(account, cancellationToken);
         var token = _tokenService.GenerateToken(account);

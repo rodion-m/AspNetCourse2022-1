@@ -38,4 +38,6 @@ internal abstract class EfRepository<TEntity>
         Entities.Update(entity);
         return ValueTask.CompletedTask;
     }
+
+    public Guid NewGuid() => Guid.NewGuid();
 }

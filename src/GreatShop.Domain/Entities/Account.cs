@@ -8,7 +8,7 @@ public record Account : IEntity
     {
     }
     
-    public Account(Guid id, string name, string email, string passwordHash, string[] roles)
+    public Account(Guid id, string name, string email, string passwordHash, Role[] roles)
     {
         Id = id;
         Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -27,5 +27,10 @@ public record Account : IEntity
     public string PasswordHash { get; set; }
 
     public DateTimeOffset AllTokensBlockedAt { get; set; }
-    public string[] Roles { get; set; }
+    public Role[] Roles { get; set; }
+    
+    public void GrantRole(Role role)
+    {
+        Roles = Roles.Append(role).ToArray();
+    }
 }

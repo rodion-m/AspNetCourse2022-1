@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GreatShop.Data.Ef;
+using GreatShop.Domain;
 using GreatShop.Domain.Entities;
 using GreatShop.Domain.Repositories;
 using Xunit;
@@ -143,7 +144,7 @@ public abstract partial class DbTests : IDisposable
 
     private static Account CreateAccount()
     {
-        return new Account(Guid.NewGuid(), "Name", "asd@asd.com", "", new[] { "Admin" });
+        return new Account(Guid.NewGuid(), "Name", "asd@asd.com", "", new[] { Role.Customer });
     }
 
     public abstract void Dispose();
