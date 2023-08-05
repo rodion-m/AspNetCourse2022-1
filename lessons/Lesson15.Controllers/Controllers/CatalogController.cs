@@ -16,36 +16,48 @@ public class CatalogController : ControllerBase
     }
 
     [HttpPost("find_category")]
-    //public async Task<ActionResult<IEnumerable<Category>>> FindCategory(CategoryFilterModel model)
     public ActionResult<Category> FindCategory(CategoryFilterModel model)
     {
         var cat = _service.FindCategory(model.Text);
-        if (cat == null) return NotFound();
-
-        return new ObjectResult(cat)
+        if (cat == null)
         {
-            DeclaredType = typeof(Category),
-            StatusCode = StatusCodes.Status200OK
-        };
-        //IEnumerable<Category> cats = _categories;
-        //return cats;
+            return NotFound();
+        }
+
+        return cat;
+    }
+    
+    [HttpPost("find_category")]
+    public async Task<ActionResult<Category>> FindCategory3(CategoryFilterModel model)
+    {
+        return ResponseOrNotFound(await _service.FindCategoryAsync(model.Text));
     }
 
+    private ActionResult<T> ResponseOrNotFound<T>(T? reponse)
+    {
+        if (reponse == null)
+        {
+            return NotFound();
+        }
+
+        return reponse;
+    }
+
+    // IActionResult
     public IActionResult FindCategory(string text) //T
     {
         Category? cat = _service.FindCategory(text);
-        if(cat is not null)
-            return Ok(cat);
-
-        var product = new Product();
-        return Ok(product);
-        return NotFound();
+        if (cat is null)
+        {
+            return NotFound();
+        }
+        return Ok(cat);
     }
-
-    public ActionResult<Category> FindCategory1(string text)
+    
+    // T
+    public Category FindCategory2(string text)
     {
         Category? cat = _service.FindCategory(text);
-        if (cat == null) return NotFound();
         return cat;
     }
 
@@ -92,5 +104,10 @@ public class CatalogService
     public Category? FindCategory(string text)
     {
         return null;
+    }
+
+    public async Task<Category?> FindCategoryAsync(string? text)
+    {
+        return new Category("");
     }
 }
