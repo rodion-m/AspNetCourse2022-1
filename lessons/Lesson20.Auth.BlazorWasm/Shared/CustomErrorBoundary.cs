@@ -10,11 +10,11 @@ namespace Lesson20.Auth.BlazorWasm.Shared;
 public class CustomErrorBoundary : ErrorBoundary
 {
     private string? _errorUri;
-    [Inject] private NavigationManager _navigationManager { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; }
 
     protected override Task OnErrorAsync(Exception exception)
     {
-        _errorUri = _navigationManager.Uri;
+        _errorUri = NavigationManager.Uri;
         return base.OnErrorAsync(exception);
     }
 
@@ -26,15 +26,15 @@ public class CustomErrorBoundary : ErrorBoundary
                 base.BuildRenderTree(builder);
                 break;
             case HttpRequestException { StatusCode: HttpStatusCode.Unauthorized }:
-                Recover();
-                var uri = _navigationManager.Uri;
-                _navigationManager.NavigateTo($"/LogIn?redirect_to={uri}");
+                base.Recover();
+                var uri = NavigationManager.Uri;
+                NavigationManager.NavigateTo($"/LogIn?redirect_to={uri}");
                 break;
             default:
             {
-                if (_navigationManager.Uri != _errorUri)
+                if (NavigationManager.Uri != _errorUri)
                 {
-                    Recover();
+                    base.Recover();
                 }
                 else
                 {
@@ -45,7 +45,6 @@ public class CustomErrorBoundary : ErrorBoundary
                         builder.AddContent(0, new MarkupString(html));
                     }
                 }
-
                 break;
             }
         }
