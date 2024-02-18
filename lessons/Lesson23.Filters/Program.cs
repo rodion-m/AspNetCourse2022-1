@@ -6,11 +6,9 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers(options =>
 {
-    options.Filters.Add<CentralizedExceptionHandlingFilter>(order: 0);
+    options.Filters.Add<CentralizedExceptionHandlingFilter>(order: 0); //добавляем фильтр в пайплайн MVC
     options.Filters.Add<AppExceptionFilter2>(order: 1);
     options.Filters.Add<LogResourceFilter>();
     options.Filters.Add<ParametersLoggingActionFilter>();

@@ -44,7 +44,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson18.Middleware", "less
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson21.UoW", "lessons\Lesson21.UoW\Lesson21.UoW.csproj", "{F7211EBB-64F7-4B8F-85BD-CE9145BE19B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson.BlazorServerAuth", "lessons\Lesson.BlazorServerAuth\Lesson.BlazorServerAuth.csproj", "{8CFCD1FD-A740-479A-BDC3-D146B83BC0C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson.BlazorServerAuth.Net6", "lessons\Lesson.BlazorServerAuth.Net6\Lesson.BlazorServerAuth.Net6.csproj", "{8CFCD1FD-A740-479A-BDC3-D146B83BC0C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson23.Filters", "lessons\Lesson23.Filters\Lesson23.Filters.csproj", "{62BD8336-1099-4503-928B-F28B0BDEF198}"
 EndProject
@@ -91,6 +91,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson03.ThreadSafeCatalogWebApi", "lessons\Lesson03.ThreadSafeCatalogWebApi\Lesson03.ThreadSafeCatalogWebApi.csproj", "{4EAF9794-0AA7-4BDD-981C-2A0353A63647}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceProviderChecks", "lessons\ServiceProviderChecks\ServiceProviderChecks.csproj", "{98793513-960F-4362-96A9-D76B67E5BF24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson.BlazorServerAuth.Net8", "lessons\Lesson.BlazorServerAuth.Net8\Lesson.BlazorServerAuth.Net8.csproj", "{2C5FCA31-687F-4125-8FE0-83A53A28F938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -262,6 +264,10 @@ Global
 		{98793513-960F-4362-96A9-D76B67E5BF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98793513-960F-4362-96A9-D76B67E5BF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98793513-960F-4362-96A9-D76B67E5BF24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5FCA31-687F-4125-8FE0-83A53A28F938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5FCA31-687F-4125-8FE0-83A53A28F938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5FCA31-687F-4125-8FE0-83A53A28F938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5FCA31-687F-4125-8FE0-83A53A28F938}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8CFCD1FD-A740-479A-BDC3-D146B83BC0C5} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
@@ -306,5 +312,6 @@ Global
 		{D2037F43-8BBC-4109-8A98-917E8AE3F457} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
 		{4EAF9794-0AA7-4BDD-981C-2A0353A63647} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
 		{98793513-960F-4362-96A9-D76B67E5BF24} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
+		{2C5FCA31-687F-4125-8FE0-83A53A28F938} = {3B7B2D67-D72D-43CD-B8DD-A5C8013C4BB7}
 	EndGlobalSection
 EndGlobal

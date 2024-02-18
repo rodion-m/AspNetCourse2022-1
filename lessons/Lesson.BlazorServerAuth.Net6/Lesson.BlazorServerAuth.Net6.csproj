@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-Lesson.BlazorServerAuth-0281A6E0-56AA-48CF-9BCD-15CD7722FA1C</UserSecretsId>
+        <RootNamespace>Lesson.BlazorServerAuth</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
